@@ -15,6 +15,7 @@ interface ServicePageLayoutProps {
 export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
   const heroRef = useRef<HTMLElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [activeModalProject, setActiveModalProject] = useState<ServiceData["projects"][0] | null>(null);
 
   useEffect(() => {
     // Hero text reveal
@@ -86,11 +87,18 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
     return () => window.removeEventListener("mousemove", handleMouse);
   }, []);
 
-  const isAccentGreen = service.accentColor === "#C8FF00";
-
   return (
     <div className="bg-black text-white min-h-screen overflow-x-hidden">
       <CustomCursor />
+
+      {/* ── Video Modal Lightbox ── */}
+      {activeModalProject && (
+        <VideoModal
+          project={activeModalProject}
+          accentColor={service.accentColor}
+          onClose={() => setActiveModalProject(null)}
+        />
+      )}
 
       {/* ── Noise overlay ── */}
       <div className="noise-overlay" aria-hidden="true" />
@@ -244,6 +252,7 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
                 project={project}
                 index={i}
                 accentColor={service.accentColor}
+                onOpenModal={() => setActiveModalProject(project)}
               />
             ))}
           </div>
@@ -482,10 +491,12 @@ function ProjectCard({
   project,
   index,
   accentColor,
+  onOpenModal,
 }: {
   project: ServiceData["projects"][0];
   index: number;
   accentColor: string;
+  onOpenModal: () => void;
 }) {
   const [hovered, setHovered] = useState(false);
   const colors = [
@@ -498,78 +509,163 @@ function ProjectCard({
 
   return (
     <div
-      className="project-card group relative overflow-hidden"
+      className="project-card group relative overflow-hidden cursor-none"
       style={{ opacity: 0 }}
+      data-cursor
+      onClick={onOpenModal}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Colour placeholder block */}
+      {/* Video Preview Frame */}
       <div
-        className="relative overflow-hidden"
+        className="relative overflow-hidden flex flex-col justify-between p-5"
         style={{
-          height: "260px",
+          height: "280px",
           background: bgColor,
-          border: "1px solid rgba(255,255,255,0.06)",
-          borderRadius: "2px",
-          transition: "border-color 0.3s ease",
-          borderColor: hovered ? `${accentColor}44` : "rgba(255,255,255,0.06)",
+          border: `1px solid ${hovered ? accentColor + "66" : "rgba(255,255,255,0.08)"}`,
+          borderRadius: "4px",
+          transition: "all 0.4s ease",
+          boxShadow: hovered ? `0 12px 40px rgba(0,0,0,0.6), 0 0 25px ${accentColor}33` : "none",
         }}
       >
-        {/* Grid texture */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
-        />
+        {/* Real Video or Grid texture */}
+        {(project as any).src ? (
+          <video
+            src={(project as any).src}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700"
+          />
+        ) : (
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
+              backgroundSize: "36px 36px",
+            }}
+          />
+        )}
 
-        {/* Project number */}
-        <div
-          className="absolute top-5 left-5"
-          style={{
-            fontFamily: "var(--font-space-mono), monospace",
-            fontSize: "0.6rem",
-            letterSpacing: "0.3em",
-            color: "rgba(255,255,255,0.2)",
-          }}
-        >
-          {String(index + 1).padStart(2, "0")}
+        {/* Top HUD bar */}
+        <div className="relative z-10 flex items-center justify-between">
+          <div
+            style={{
+              fontFamily: "var(--font-space-mono), monospace",
+              fontSize: "0.55rem",
+              letterSpacing: "0.2em",
+              color: "rgba(255,255,255,0.4)",
+              background: "rgba(0,0,0,0.4)",
+              backdropFilter: "blur(8px)",
+              padding: "0.25rem 0.6rem",
+              borderRadius: "3px",
+              border: "1px solid rgba(255,255,255,0.1)",
+            }}
+          >
+            SHOWCASE #{String(index + 1).padStart(2, "0")}
+          </div>
+
+          <div
+            style={{
+              fontFamily: "var(--font-space-mono), monospace",
+              fontSize: "0.5rem",
+              letterSpacing: "0.15em",
+              color: accentColor,
+              background: `${accentColor}18`,
+              border: `1px solid ${accentColor}33`,
+              padding: "0.2rem 0.55rem",
+              borderRadius: "9999px",
+            }}
+          >
+            4K · 60FPS
+          </div>
         </div>
 
-        {/* Hover accent line */}
+        {/* Center Play Button HUD */}
+        <div className="relative z-10 flex flex-col items-center justify-center gap-2 my-auto pointer-events-none">
+          <div
+            className="flex items-center justify-center transition-all duration-400"
+            style={{
+              width: hovered ? "64px" : "54px",
+              height: hovered ? "64px" : "54px",
+              borderRadius: "50%",
+              background: hovered ? accentColor : "rgba(0,0,0,0.6)",
+              border: `1.5px solid ${accentColor}`,
+              boxShadow: hovered ? `0 0 30px ${accentColor}aa` : `0 0 15px ${accentColor}33`,
+              transform: hovered ? "scale(1.1)" : "scale(1)",
+            }}
+          >
+            <span
+              style={{
+                fontSize: "1rem",
+                color: hovered ? "#000" : "white",
+                marginLeft: "3px",
+                transition: "color 0.3s ease",
+              }}
+            >
+              ▶
+            </span>
+          </div>
+
+          <div
+            style={{
+              fontFamily: "var(--font-space-mono), monospace",
+              fontSize: "0.58rem",
+              letterSpacing: "0.25em",
+              color: hovered ? "white" : "rgba(255,255,255,0.6)",
+              textShadow: "0 2px 10px rgba(0,0,0,0.8)",
+              transition: "color 0.3s ease",
+            }}
+          >
+            {hovered ? "CLICK TO PLAY DEMO" : "PREVIEW EDIT"}
+          </div>
+        </div>
+
+        {/* Bottom HUD: Animated Audio Waveform & Client Placeholder Watermark */}
+        <div className="relative z-10 flex items-end justify-between">
+          <div
+            style={{
+              fontFamily: "var(--font-space-mono), monospace",
+              fontSize: "0.5rem",
+              letterSpacing: "0.15em",
+              color: "rgba(255,255,255,0.3)",
+              background: "rgba(0,0,0,0.5)",
+              padding: "0.2rem 0.5rem",
+              borderRadius: "3px",
+            }}
+          >
+            {(project as any).src ? "CLIENT FOOTAGE LINKED" : "+ REPLACE WITH CLIENT VIDEO"}
+          </div>
+
+          {/* Animated audio equalizer bars */}
+          <div className="flex items-end gap-1 h-4">
+            {[0.4, 0.9, 0.6, 0.3, 0.8, 0.5].map((h, bi) => (
+              <div
+                key={bi}
+                style={{
+                  width: "2px",
+                  height: hovered ? `${h * 100}%` : `${h * 40}%`,
+                  background: accentColor,
+                  borderRadius: "1px",
+                  transition: "height 0.3s ease",
+                  opacity: hovered ? 0.9 : 0.4,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Hover accent bottom border line */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-px transition-transform duration-500"
+          className="absolute bottom-0 left-0 right-0 h-0.5 transition-transform duration-500"
           style={{
             background: accentColor,
             transform: hovered ? "scaleX(1)" : "scaleX(0)",
             transformOrigin: "left",
           }}
         />
-
-        {/* Tags on hover */}
-        <div
-          className="absolute top-4 right-4 flex flex-col gap-1 items-end transition-all duration-300"
-          style={{ opacity: hovered ? 1 : 0, transform: hovered ? "translateY(0)" : "translateY(6px)" }}
-        >
-          {project.tags.slice(0, 2).map((tag, ti) => (
-            <span
-              key={ti}
-              style={{
-                fontFamily: "var(--font-space-mono), monospace",
-                fontSize: "0.5rem",
-                letterSpacing: "0.2em",
-                color: accentColor,
-                background: `${accentColor}15`,
-                padding: "0.2rem 0.5rem",
-                borderRadius: "9999px",
-              }}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
       </div>
 
       {/* Info below */}
@@ -578,7 +674,7 @@ function ProjectCard({
           <h3
             style={{
               fontFamily: '"Bebas Neue", sans-serif',
-              fontSize: "1.4rem",
+              fontSize: "1.5rem",
               letterSpacing: "0.05em",
               color: hovered ? accentColor : "white",
               lineHeight: 1,
@@ -592,7 +688,7 @@ function ProjectCard({
               fontFamily: "var(--font-space-mono), monospace",
               fontSize: "0.55rem",
               letterSpacing: "0.2em",
-              color: "rgba(255,255,255,0.3)",
+              color: "rgba(255,255,255,0.4)",
               whiteSpace: "nowrap",
               marginTop: "0.2rem",
             }}
@@ -603,10 +699,10 @@ function ProjectCard({
         <p
           style={{
             fontFamily: "var(--font-space-mono), monospace",
-            fontSize: "0.58rem",
+            fontSize: "0.6rem",
             letterSpacing: "0.15em",
-            color: "rgba(255,255,255,0.35)",
-            marginTop: "0.4rem",
+            color: "rgba(255,255,255,0.45)",
+            marginTop: "0.3rem",
           }}
         >
           {project.category}
@@ -695,6 +791,204 @@ function ApproachStep({
         >
           →
         </span>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Interactive Video Lightbox Modal ─── */
+function VideoModal({
+  project,
+  accentColor,
+  onClose,
+}: {
+  project: ServiceData["projects"][0];
+  accentColor: string;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 bg-black/90 backdrop-blur-xl animate-fadeIn"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-4xl bg-black border border-white/10 rounded-xl overflow-hidden shadow-2xl flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          boxShadow: `0 20px 80px rgba(0,0,0,0.9), 0 0 50px ${accentColor}22`,
+        }}
+      >
+        {/* Modal Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/[0.02]">
+          <div className="flex items-center gap-3">
+            <span
+              style={{
+                fontFamily: "var(--font-space-mono), monospace",
+                fontSize: "0.55rem",
+                letterSpacing: "0.2em",
+                color: accentColor,
+                background: `${accentColor}18`,
+                padding: "0.2rem 0.6rem",
+                borderRadius: "9999px",
+              }}
+            >
+              SHOWCASE PLAYER
+            </span>
+            <span
+              style={{
+                fontFamily: "var(--font-space-mono), monospace",
+                fontSize: "0.6rem",
+                letterSpacing: "0.15em",
+                color: "rgba(255,255,255,0.4)",
+              }}
+            >
+              {project.category} · {project.year}
+            </span>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="text-white/60 hover:text-white transition-colors p-2 text-xl font-mono"
+            data-cursor
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Video Player Display Area */}
+        <div
+          className="relative w-full bg-black flex items-center justify-center overflow-hidden"
+          style={{ height: "min(460px, 55vh)" }}
+        >
+          {(project as any).src ? (
+            <video
+              src={(project as any).src}
+              controls
+              autoPlay
+              className="w-full h-full object-contain"
+            />
+          ) : (
+            <div
+              className="relative w-full h-full flex flex-col items-center justify-center p-8 text-center"
+              style={{
+                background: "linear-gradient(140deg, #1c0303 0%, #3d0706 50%, #000000 100%)",
+              }}
+            >
+              {/* Grid texture */}
+              <div
+                className="absolute inset-0 pointer-events-none opacity-40"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
+                  backgroundSize: "40px 40px",
+                }}
+              />
+
+              <div
+                className="w-20 h-20 rounded-full flex items-center justify-center mb-6"
+                style={{
+                  background: `${accentColor}20`,
+                  border: `2px solid ${accentColor}`,
+                  boxShadow: `0 0 40px ${accentColor}66`,
+                }}
+              >
+                <span className="text-2xl text-white ml-1">▶</span>
+              </div>
+
+              <h4
+                style={{
+                  fontFamily: '"Bebas Neue", sans-serif',
+                  fontSize: "2.5rem",
+                  color: "white",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                {project.title}
+              </h4>
+
+              <p
+                className="mt-2 max-w-md"
+                style={{
+                  fontFamily: "var(--font-space-grotesk), sans-serif",
+                  fontSize: "0.9rem",
+                  color: "rgba(255,255,255,0.6)",
+                  lineHeight: 1.6,
+                }}
+              >
+                {project.description}
+              </p>
+
+              <div
+                className="mt-6 flex items-center gap-2 px-4 py-2 rounded-md"
+                style={{
+                  background: "rgba(255,90,77,0.1)",
+                  border: "1px dashed rgba(255,90,77,0.4)",
+                  fontFamily: "var(--font-space-mono), monospace",
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.15em",
+                  color: "#FF5A4D",
+                }}
+              >
+                <span>🎬 READY FOR CLIENT VIDEO EMBED</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Modal Footer / CTAs */}
+        <div className="p-6 bg-white/[0.02] border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex flex-wrap gap-2 mb-2">
+              {project.tags.map((tag, ti) => (
+                <span
+                  key={ti}
+                  style={{
+                    fontFamily: "var(--font-space-mono), monospace",
+                    fontSize: "0.55rem",
+                    letterSpacing: "0.15em",
+                    color: "rgba(255,255,255,0.5)",
+                    background: "rgba(255,255,255,0.06)",
+                    padding: "0.2rem 0.6rem",
+                    borderRadius: "4px",
+                  }}
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+            <p
+              style={{
+                fontFamily: "var(--font-space-mono), monospace",
+                fontSize: "0.6rem",
+                letterSpacing: "0.1em",
+                color: "rgba(255,255,255,0.4)",
+              }}
+            >
+              TAHA EL MAANAOUI · HIGH-RETENTION POST-PRODUCTION
+            </p>
+          </div>
+
+          <Link
+            href="/start-a-project"
+            onClick={onClose}
+            data-cursor
+            className="group px-6 py-3 rounded-full text-xs font-mono font-bold tracking-widest text-black transition-all duration-300 flex items-center gap-2"
+            style={{
+              background: accentColor,
+              boxShadow: `0 0 20px ${accentColor}55`,
+            }}
+          >
+            REQUEST SIMILAR EDIT →
+          </Link>
+        </div>
       </div>
     </div>
   );
