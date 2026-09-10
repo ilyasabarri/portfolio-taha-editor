@@ -7,134 +7,374 @@ import { useLang } from "@/lib/lang-context";
 
 type SoftwareType = "Pr" | "Ai" | "Ps" | "Ae" | "DaVinci" | "Blender";
 
-/* ─── Dynamic 3D Texture Generator for Software Logos ───────── */
-function createSoftwareTexture(type: SoftwareType): THREE.CanvasTexture | null {
-  if (typeof window === "undefined") return null;
-  
-  const canvas = document.createElement("canvas");
-  canvas.width = 512;
-  canvas.height = 512;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return null;
+/* ─── 3D True Extruded Software Logos ───────────────────────── */
+function PremiereProLogo3D({ color }: { color: string }) {
+  const { pShape, pStem, rStem, rArch, rDot } = useMemo(() => {
+    // Letter P Stem
+    const pStem = new THREE.Shape();
+    pStem.moveTo(-0.32, -0.24);
+    pStem.lineTo(-0.20, -0.24);
+    pStem.lineTo(-0.20, 0.24);
+    pStem.lineTo(-0.32, 0.24);
+    pStem.closePath();
 
-  // Base background
-  ctx.fillStyle = "#0c0c12";
-  ctx.fillRect(0, 0, 512, 512);
+    // Letter P Loop
+    const pShape = new THREE.Shape();
+    pShape.moveTo(-0.20, 0.02);
+    pShape.lineTo(-0.02, 0.02);
+    pShape.quadraticCurveTo(0.12, 0.02, 0.12, 0.13);
+    pShape.quadraticCurveTo(0.12, 0.24, -0.02, 0.24);
+    pShape.lineTo(-0.20, 0.24);
+    pShape.closePath();
 
-  // Outer rounded square border & fill
-  const radius = 64;
-  ctx.beginPath();
-  ctx.roundRect(24, 24, 464, 464, radius);
+    const holeP = new THREE.Path();
+    holeP.moveTo(-0.10, 0.08);
+    holeP.lineTo(-0.02, 0.08);
+    holeP.quadraticCurveTo(0.03, 0.08, 0.03, 0.13);
+    holeP.quadraticCurveTo(0.03, 0.18, -0.02, 0.18);
+    holeP.lineTo(-0.10, 0.18);
+    holeP.closePath();
+    pShape.holes.push(holeP);
 
-  if (type === "Pr") {
-    ctx.fillStyle = "#00004e";
-    ctx.fill();
-    ctx.lineWidth = 18;
-    ctx.strokeStyle = "#9999ff";
-    ctx.stroke();
+    // Letter r Stem
+    const rStem = new THREE.Shape();
+    rStem.moveTo(0.04, -0.24);
+    rStem.lineTo(0.14, -0.24);
+    rStem.lineTo(0.14, 0.06);
+    rStem.lineTo(0.04, 0.06);
+    rStem.closePath();
 
-    ctx.font = "bold 230px sans-serif";
-    ctx.fillStyle = "#9999ff";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("Pr", 256, 256);
-  } else if (type === "Ai") {
-    ctx.fillStyle = "#331100";
-    ctx.fill();
-    ctx.lineWidth = 18;
-    ctx.strokeStyle = "#ff9900";
-    ctx.stroke();
+    // Letter r Arch
+    const rArch = new THREE.Shape();
+    rArch.moveTo(0.14, -0.04);
+    rArch.quadraticCurveTo(0.20, 0.06, 0.32, 0.06);
+    rArch.lineTo(0.32, -0.02);
+    rArch.quadraticCurveTo(0.24, -0.02, 0.14, -0.10);
+    rArch.closePath();
 
-    ctx.font = "bold 230px sans-serif";
-    ctx.fillStyle = "#ff9900";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("Ai", 256, 256);
-  } else if (type === "Ps") {
-    ctx.fillStyle = "#001e36";
-    ctx.fill();
-    ctx.lineWidth = 18;
-    ctx.strokeStyle = "#31a8ff";
-    ctx.stroke();
+    // Letter r Dot
+    const rDot = new THREE.Shape();
+    rDot.absarc(0.09, 0.16, 0.045, 0, Math.PI * 2, false);
 
-    ctx.font = "bold 230px sans-serif";
-    ctx.fillStyle = "#31a8ff";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("Ps", 256, 256);
-  } else if (type === "Ae") {
-    ctx.fillStyle = "#20003b";
-    ctx.fill();
-    ctx.lineWidth = 18;
-    ctx.strokeStyle = "#cf96fd";
-    ctx.stroke();
+    return { pShape, pStem, rStem, rArch, rDot };
+  }, []);
 
-    ctx.font = "bold 230px sans-serif";
-    ctx.fillStyle = "#cf96fd";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("Ae", 256, 256);
-  } else if (type === "DaVinci") {
-    ctx.fillStyle = "#091424";
-    ctx.fill();
-    ctx.lineWidth = 18;
-    ctx.strokeStyle = "#00ccff";
-    ctx.stroke();
+  const extrudeOpts = {
+    depth: 0.08,
+    bevelEnabled: true,
+    bevelThickness: 0.025,
+    bevelSize: 0.02,
+    bevelSegments: 4,
+  };
 
-    // 3 Color Wheel Rings of DaVinci
-    const centers = [
-      { x: 256, y: 190, color: "#ff3344" },
-      { x: 195, y: 295, color: "#33cc55" },
-      { x: 317, y: 295, color: "#3388ff" },
-    ];
-    centers.forEach((c) => {
-      ctx.beginPath();
-      ctx.arc(c.x, c.y, 65, 0, Math.PI * 2);
-      ctx.fillStyle = c.color;
-      ctx.globalAlpha = 0.88;
-      ctx.fill();
-    });
-    ctx.globalAlpha = 1.0;
-  } else if (type === "Blender") {
-    ctx.fillStyle = "#1e1408";
-    ctx.fill();
-    ctx.lineWidth = 18;
-    ctx.strokeStyle = "#ea7600";
-    ctx.stroke();
+  const mat = (
+    <meshPhysicalMaterial
+      color={color}
+      metalness={0.9}
+      roughness={0.12}
+      clearcoat={1.0}
+      clearcoatRoughness={0.05}
+      reflectivity={1.0}
+      emissive={color}
+      emissiveIntensity={0.35}
+    />
+  );
 
-    // Iconic Blender Orange Circle & Blue Eye
-    ctx.beginPath();
-    ctx.arc(256, 280, 85, 0, Math.PI * 2);
-    ctx.fillStyle = "#ea7600";
-    ctx.fill();
+  return (
+    <group position={[0, 0, 0.12]}>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={[pStem, extrudeOpts]} />
+        {mat}
+      </mesh>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={[pShape, extrudeOpts]} />
+        {mat}
+      </mesh>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={[rStem, extrudeOpts]} />
+        {mat}
+      </mesh>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={[rArch, extrudeOpts]} />
+        {mat}
+      </mesh>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={[rDot, extrudeOpts]} />
+        {mat}
+      </mesh>
+    </group>
+  );
+}
 
-    ctx.beginPath();
-    ctx.arc(256, 280, 42, 0, Math.PI * 2);
-    ctx.fillStyle = "#0066cc";
-    ctx.fill();
+function IllustratorLogo3D({ color }: { color: string }) {
+  const { aShape, iStem, iDot } = useMemo(() => {
+    // Letter A
+    const aShape = new THREE.Shape();
+    aShape.moveTo(-0.28, -0.24);
+    aShape.lineTo(-0.16, -0.24);
+    aShape.lineTo(-0.10, -0.04);
+    aShape.lineTo(0.02, -0.04);
+    aShape.lineTo(0.08, -0.24);
+    aShape.lineTo(0.20, -0.24);
+    aShape.lineTo(-0.04, 0.24);
+    aShape.lineTo(-0.04, 0.24);
+    aShape.closePath();
 
-    // Blender spokes
-    ctx.beginPath();
-    ctx.moveTo(256, 195);
-    ctx.lineTo(256, 115);
-    ctx.lineWidth = 26;
-    ctx.strokeStyle = "#ea7600";
-    ctx.stroke();
+    const holeA = new THREE.Path();
+    holeA.moveTo(-0.07, 0.06);
+    holeA.lineTo(0.00, 0.06);
+    holeA.lineTo(-0.04, 0.18);
+    holeA.closePath();
+    aShape.holes.push(holeA);
 
-    ctx.beginPath();
-    ctx.moveTo(315, 220);
-    ctx.lineTo(380, 155);
-    ctx.stroke();
+    // Letter i Stem
+    const iStem = new THREE.Shape();
+    iStem.moveTo(0.12, -0.24);
+    iStem.lineTo(0.24, -0.24);
+    iStem.lineTo(0.24, 0.06);
+    iStem.lineTo(0.12, 0.06);
+    iStem.closePath();
 
-    ctx.beginPath();
-    ctx.moveTo(197, 220);
-    ctx.lineTo(132, 155);
-    ctx.stroke();
-  }
+    // Letter i Dot
+    const iDot = new THREE.Shape();
+    iDot.absarc(0.18, 0.17, 0.05, 0, Math.PI * 2, false);
 
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.needsUpdate = true;
-  return texture;
+    return { aShape, iStem, iDot };
+  }, []);
+
+  const extrudeOpts = {
+    depth: 0.08,
+    bevelEnabled: true,
+    bevelThickness: 0.025,
+    bevelSize: 0.02,
+    bevelSegments: 4,
+  };
+
+  const mat = (
+    <meshPhysicalMaterial
+      color={color}
+      metalness={0.9}
+      roughness={0.12}
+      clearcoat={1.0}
+      reflectivity={1.0}
+      emissive={color}
+      emissiveIntensity={0.35}
+    />
+  );
+
+  return (
+    <group position={[0, 0, 0.12]}>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={[aShape, extrudeOpts]} />
+        {mat}
+      </mesh>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={[iStem, extrudeOpts]} />
+        {mat}
+      </mesh>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={[iDot, extrudeOpts]} />
+        {mat}
+      </mesh>
+    </group>
+  );
+}
+
+function PhotoshopLogo3D({ color }: { color: string }) {
+  const { pStem, pLoop, sShape } = useMemo(() => {
+    // P Stem
+    const pStem = new THREE.Shape();
+    pStem.moveTo(-0.32, -0.24);
+    pStem.lineTo(-0.20, -0.24);
+    pStem.lineTo(-0.20, 0.24);
+    pStem.lineTo(-0.32, 0.24);
+    pStem.closePath();
+
+    // P Loop
+    const pLoop = new THREE.Shape();
+    pLoop.moveTo(-0.20, 0.02);
+    pLoop.lineTo(-0.02, 0.02);
+    pLoop.quadraticCurveTo(0.10, 0.02, 0.10, 0.13);
+    pLoop.quadraticCurveTo(0.10, 0.24, -0.02, 0.24);
+    pLoop.lineTo(-0.20, 0.24);
+    pLoop.closePath();
+
+    const holeP = new THREE.Path();
+    holeP.moveTo(-0.10, 0.08);
+    holeP.lineTo(-0.02, 0.08);
+    holeP.quadraticCurveTo(0.02, 0.08, 0.02, 0.13);
+    holeP.quadraticCurveTo(0.02, 0.18, -0.02, 0.18);
+    holeP.lineTo(-0.10, 0.18);
+    holeP.closePath();
+    pLoop.holes.push(holeP);
+
+    // Letter s
+    const sShape = new THREE.Shape();
+    sShape.moveTo(0.04, -0.24);
+    sShape.lineTo(0.26, -0.24);
+    sShape.lineTo(0.26, -0.16);
+    sShape.lineTo(0.12, -0.16);
+    sShape.quadraticCurveTo(0.08, -0.16, 0.08, -0.12);
+    sShape.quadraticCurveTo(0.08, -0.08, 0.22, -0.04);
+    sShape.quadraticCurveTo(0.28, 0.00, 0.28, 0.08);
+    sShape.quadraticCurveTo(0.28, 0.18, 0.16, 0.18);
+    sShape.lineTo(0.02, 0.18);
+    sShape.lineTo(0.02, 0.10);
+    sShape.lineTo(0.16, 0.10);
+    sShape.quadraticCurveTo(0.20, 0.10, 0.20, 0.06);
+    sShape.quadraticCurveTo(0.20, 0.02, 0.08, -0.02);
+    sShape.quadraticCurveTo(0.02, -0.06, 0.02, -0.14);
+    sShape.quadraticCurveTo(0.02, -0.24, 0.14, -0.24);
+    sShape.closePath();
+
+    return { pStem, pLoop, sShape };
+  }, []);
+
+  const extrudeOpts = {
+    depth: 0.08,
+    bevelEnabled: true,
+    bevelThickness: 0.025,
+    bevelSize: 0.02,
+    bevelSegments: 4,
+  };
+
+  const mat = (
+    <meshPhysicalMaterial
+      color={color}
+      metalness={0.9}
+      roughness={0.12}
+      clearcoat={1.0}
+      reflectivity={1.0}
+      emissive={color}
+      emissiveIntensity={0.35}
+    />
+  );
+
+  return (
+    <group position={[0, 0, 0.12]}>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={[pStem, extrudeOpts]} />
+        {mat}
+      </mesh>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={[pLoop, extrudeOpts]} />
+        {mat}
+      </mesh>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={[sShape, extrudeOpts]} />
+        {mat}
+      </mesh>
+    </group>
+  );
+}
+
+function AfterEffectsLogo3D({ color }: { color: string }) {
+  const { aShape, eShape } = useMemo(() => {
+    // Letter A
+    const aShape = new THREE.Shape();
+    aShape.moveTo(-0.28, -0.24);
+    aShape.lineTo(-0.16, -0.24);
+    aShape.lineTo(-0.10, -0.04);
+    aShape.lineTo(0.02, -0.04);
+    aShape.lineTo(0.08, -0.24);
+    aShape.lineTo(0.20, -0.24);
+    aShape.lineTo(-0.04, 0.24);
+    aShape.closePath();
+
+    const holeA = new THREE.Path();
+    holeA.moveTo(-0.07, 0.06);
+    holeA.lineTo(0.00, 0.06);
+    holeA.lineTo(-0.04, 0.18);
+    holeA.closePath();
+    aShape.holes.push(holeA);
+
+    // Letter e
+    const eShape = new THREE.Shape();
+    eShape.moveTo(0.04, -0.24);
+    eShape.lineTo(0.28, -0.24);
+    eShape.lineTo(0.28, -0.16);
+    eShape.lineTo(0.14, -0.16);
+    eShape.lineTo(0.14, -0.06);
+    eShape.lineTo(0.26, -0.06);
+    eShape.lineTo(0.26, 0.02);
+    eShape.lineTo(0.14, 0.02);
+    eShape.lineTo(0.14, 0.10);
+    eShape.lineTo(0.28, 0.10);
+    eShape.lineTo(0.28, 0.18);
+    eShape.lineTo(0.04, 0.18);
+    eShape.closePath();
+
+    return { aShape, eShape };
+  }, []);
+
+  const extrudeOpts = {
+    depth: 0.08,
+    bevelEnabled: true,
+    bevelThickness: 0.025,
+    bevelSize: 0.02,
+    bevelSegments: 4,
+  };
+
+  const mat = (
+    <meshPhysicalMaterial
+      color={color}
+      metalness={0.9}
+      roughness={0.12}
+      clearcoat={1.0}
+      reflectivity={1.0}
+      emissive={color}
+      emissiveIntensity={0.35}
+    />
+  );
+
+  return (
+    <group position={[0, 0, 0.12]}>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={[aShape, extrudeOpts]} />
+        {mat}
+      </mesh>
+      <mesh castShadow receiveShadow>
+        <extrudeGeometry args={[eShape, extrudeOpts]} />
+        {mat}
+      </mesh>
+    </group>
+  );
+}
+
+function DaVinciLogo3D() {
+  return (
+    <group position={[0, 0, 0.14]}>
+      <mesh position={[-0.12, 0.12, 0]} castShadow>
+        <cylinderGeometry args={[0.15, 0.15, 0.06, 32]} />
+        <meshPhysicalMaterial color="#ff3344" metalness={0.8} roughness={0.2} emissive="#ff3344" emissiveIntensity={0.4} />
+      </mesh>
+      <mesh position={[0.12, 0.12, 0]} castShadow>
+        <cylinderGeometry args={[0.15, 0.15, 0.06, 32]} />
+        <meshPhysicalMaterial color="#33cc55" metalness={0.8} roughness={0.2} emissive="#33cc55" emissiveIntensity={0.4} />
+      </mesh>
+      <mesh position={[0, -0.12, 0]} castShadow>
+        <cylinderGeometry args={[0.15, 0.15, 0.06, 32]} />
+        <meshPhysicalMaterial color="#00aaff" metalness={0.8} roughness={0.2} emissive="#00aaff" emissiveIntensity={0.4} />
+      </mesh>
+    </group>
+  );
+}
+
+function BlenderLogo3D() {
+  return (
+    <group position={[0, 0, 0.14]}>
+      {/* Outer 3D ring */}
+      <mesh castShadow>
+        <torusGeometry args={[0.22, 0.04, 16, 32]} />
+        <meshPhysicalMaterial color="#ea7600" metalness={0.85} roughness={0.15} emissive="#ea7600" emissiveIntensity={0.4} />
+      </mesh>
+      {/* Inner blue eye */}
+      <mesh position={[0, 0, 0.02]} castShadow>
+        <cylinderGeometry args={[0.10, 0.10, 0.05, 32]} />
+        <meshPhysicalMaterial color="#0066cc" metalness={0.9} roughness={0.1} emissive="#0066cc" emissiveIntensity={0.4} />
+      </mesh>
+    </group>
+  );
 }
 
 /* ─── 3D Software Tool Cube Component ───────────────────────── */
@@ -161,8 +401,6 @@ function SoftwareCube3D({
   const [hovered, setHovered] = useState(false);
   const { mouse } = useThree();
 
-  const logoTexture = useMemo(() => createSoftwareTexture(type), [type]);
-
   useFrame((state) => {
     if (!meshRef.current) return;
     const t = state.clock.elapsedTime;
@@ -180,27 +418,68 @@ function SoftwareCube3D({
   });
 
   // Rounded 3D tile geometry
-  const tileShape = new THREE.Shape();
-  const width = 1.2;
-  const height = 1.2;
-  const radius = 0.28;
+  const tileShape = useMemo(() => {
+    const tileShape = new THREE.Shape();
+    const width = 1.25;
+    const height = 1.25;
+    const radius = 0.30;
 
-  tileShape.moveTo(-width / 2 + radius, -height / 2);
-  tileShape.lineTo(width / 2 - radius, -height / 2);
-  tileShape.quadraticCurveTo(width / 2, -height / 2, width / 2, -height / 2 + radius);
-  tileShape.lineTo(width / 2, height / 2 - radius);
-  tileShape.quadraticCurveTo(width / 2, height / 2, width / 2 - radius, height / 2);
-  tileShape.lineTo(-width / 2 + radius, height / 2);
-  tileShape.quadraticCurveTo(-width / 2, height / 2, -width / 2, height / 2 - radius);
-  tileShape.lineTo(-width / 2, -height / 2 + radius);
-  tileShape.quadraticCurveTo(-width / 2, -height / 2, -width / 2 + radius, -height / 2);
+    tileShape.moveTo(-width / 2 + radius, -height / 2);
+    tileShape.lineTo(width / 2 - radius, -height / 2);
+    tileShape.quadraticCurveTo(width / 2, -height / 2, width / 2, -height / 2 + radius);
+    tileShape.lineTo(width / 2, height / 2 - radius);
+    tileShape.quadraticCurveTo(width / 2, height / 2, width / 2 - radius, height / 2);
+    tileShape.lineTo(-width / 2 + radius, height / 2);
+    tileShape.quadraticCurveTo(-width / 2, height / 2, -width / 2, height / 2 - radius);
+    tileShape.lineTo(-width / 2, -height / 2 + radius);
+    tileShape.quadraticCurveTo(-width / 2, -height / 2, -width / 2 + radius, -height / 2);
+    return tileShape;
+  }, []);
 
-  const extrudeSettings = {
-    depth: 0.22,
+  // Outer Beveled 3D Border Geometry
+  const borderShape = useMemo(() => {
+    const shape = new THREE.Shape();
+    const w = 1.25, h = 1.25, r = 0.30;
+    shape.moveTo(-w / 2 + r, -h / 2);
+    shape.lineTo(w / 2 - r, -h / 2);
+    shape.quadraticCurveTo(w / 2, -h / 2, w / 2, -h / 2 + r);
+    shape.lineTo(w / 2, h / 2 - r);
+    shape.quadraticCurveTo(w / 2, h / 2, w / 2 - r, h / 2);
+    shape.lineTo(-w / 2 + r, h / 2);
+    shape.quadraticCurveTo(-w / 2, h / 2, -w / 2, h / 2 - r);
+    shape.lineTo(-w / 2, -h / 2 + r);
+    shape.quadraticCurveTo(-w / 2, -h / 2, -w / 2 + r, -h / 2);
+
+    const hole = new THREE.Path();
+    const iw = 1.10, ih = 1.10, ir = 0.24;
+    hole.moveTo(-iw / 2 + ir, -ih / 2);
+    hole.lineTo(iw / 2 - ir, -ih / 2);
+    hole.quadraticCurveTo(iw / 2, -ih / 2, iw / 2, -ih / 2 + ir);
+    hole.lineTo(iw / 2, ih / 2 - ir);
+    hole.quadraticCurveTo(iw / 2, ih / 2, iw / 2 - ir, ih / 2);
+    hole.lineTo(-iw / 2 + ir, ih / 2);
+    hole.quadraticCurveTo(-iw / 2, ih / 2, -iw / 2, ih / 2 - ir);
+    hole.lineTo(-iw / 2, -ih / 2 + ir);
+    hole.quadraticCurveTo(-iw / 2, -ih / 2, -iw / 2 + ir, -ih / 2);
+
+    shape.holes.push(hole);
+    return shape;
+  }, []);
+
+  const extrudeTile = {
+    depth: 0.24,
     bevelEnabled: true,
     bevelThickness: 0.04,
     bevelSize: 0.035,
     bevelSegments: 5,
+  };
+
+  const extrudeBorder = {
+    depth: 0.04,
+    bevelEnabled: true,
+    bevelThickness: 0.015,
+    bevelSize: 0.01,
+    bevelSegments: 3,
   };
 
   return (
@@ -216,32 +495,45 @@ function SoftwareCube3D({
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
       >
-        {/* 3D Tile Extruded Base */}
+        {/* 3D Tile Extruded Base Mesh */}
         <mesh castShadow receiveShadow>
-          <extrudeGeometry args={[tileShape, extrudeSettings]} />
+          <extrudeGeometry args={[tileShape, extrudeTile]} />
           <meshPhysicalMaterial
-            color="#14141d"
-            metalness={0.8}
+            color="#0d0d15"
+            metalness={0.85}
             roughness={0.15}
             clearcoat={1.0}
-            clearcoatRoughness={0.08}
+            clearcoatRoughness={0.05}
             reflectivity={1.0}
             emissive={glowColor}
             emissiveIntensity={hovered ? 0.45 : 0.15}
           />
         </mesh>
 
-        {/* Front Face Plane with Crisp Brand Logo Texture */}
-        {logoTexture && (
-          <mesh position={[0, 0, 0.23]}>
-            <planeGeometry args={[1.15, 1.15]} />
-            <meshBasicMaterial map={logoTexture} transparent />
-          </mesh>
-        )}
+        {/* 3D Extruded Outer Brand Border */}
+        <mesh position={[0, 0, 0.23]} castShadow>
+          <extrudeGeometry args={[borderShape, extrudeBorder]} />
+          <meshPhysicalMaterial
+            color={glowColor}
+            metalness={0.9}
+            roughness={0.1}
+            clearcoat={1.0}
+            emissive={glowColor}
+            emissiveIntensity={0.5}
+          />
+        </mesh>
+
+        {/* True 3D Extruded Logo Mesh Geometry */}
+        {type === "Pr" && <PremiereProLogo3D color={glowColor} />}
+        {type === "Ai" && <IllustratorLogo3D color={glowColor} />}
+        {type === "Ps" && <PhotoshopLogo3D color={glowColor} />}
+        {type === "Ae" && <AfterEffectsLogo3D color={glowColor} />}
+        {type === "DaVinci" && <DaVinciLogo3D />}
+        {type === "Blender" && <BlenderLogo3D />}
 
         {/* Glowing Back Ring */}
         <mesh position={[0, 0, -0.05]}>
-          <torusGeometry args={[0.78, 0.015, 16, 64]} />
+          <torusGeometry args={[0.82, 0.016, 16, 64]} />
           <meshBasicMaterial color={glowColor} transparent opacity={hovered ? 0.85 : 0.35} />
         </mesh>
       </group>
@@ -343,7 +635,7 @@ export default function HeroScene() {
             <Suspense fallback={null}>
               <ParticleAtmosphere count={2500} />
 
-              {/* 3D Software Tool Cubes with Brand Logos Directly on Cubes */}
+              {/* True 3D Software Tool Cubes with Extruded 3D Logos */}
               {/* Left Side 3D Cubes */}
               <SoftwareCube3D
                 type="Pr"
