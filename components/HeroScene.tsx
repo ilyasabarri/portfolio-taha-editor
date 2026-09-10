@@ -464,7 +464,7 @@ export default function HeroScene() {
 
       {/* ── Center Visual Layer: TAHA & ELmaanaoui Titles ── */}
       <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center pointer-events-none overflow-hidden">
-        <div className="relative w-full text-center flex flex-col items-center justify-center select-none">
+        <div className="relative w-full text-center flex flex-col items-center justify-center select-none -translate-y-8 md:-translate-y-12">
           {/* Giant 3D Backdrop Text "TAHA" */}
           <h1
             className="tracking-tighter font-extrabold uppercase"
