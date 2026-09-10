@@ -63,17 +63,21 @@ function createSoftwareLogoTexture(type: SoftwareType, config: SoftwareConfig): 
   const ctx = canvas.getContext("2d");
   if (!ctx) return null;
 
-  // Clear & fill tile background matching 3D cube color
-  ctx.fillStyle = config.tileColor;
-  ctx.fillRect(0, 0, 512, 512);
+  // Clear canvas background to transparent (no dark square corners!)
+  ctx.clearRect(0, 0, 512, 512);
 
-  // Outer Brand Border Frame
-  const radius = 72;
+  // Outer Light-Colored Rounded String Border
+  const radius = 76;
   ctx.beginPath();
-  ctx.roundRect(28, 28, 456, 456, radius);
-  ctx.lineWidth = 28;
+  ctx.roundRect(42, 42, 428, 428, radius);
+  ctx.lineWidth = 34;
   ctx.strokeStyle = config.borderColor;
+  ctx.shadowColor = config.borderColor;
+  ctx.shadowBlur = 25;
   ctx.stroke();
+
+  // Reset shadow blur for crisp text
+  ctx.shadowBlur = 10;
 
   // Draw Logo Text / Graphics
   if (type === "Pr" || type === "Ai" || type === "Ps" || type === "Ae") {
