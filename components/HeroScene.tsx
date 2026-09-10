@@ -7,81 +7,81 @@ import { useLang } from "@/lib/lang-context";
 
 type SoftwareType = "Pr" | "Ai" | "Ps" | "Ae" | "DaVinci" | "Blender";
 
-/* ─── 3D True Extruded Software Logos ───────────────────────── */
+/* ─── 3D True Extruded Software Logos (Front-Face Raised) ───── */
 function PremiereProLogo3D({ color }: { color: string }) {
   const { pShape, pStem, rStem, rArch, rDot } = useMemo(() => {
     // Letter P Stem
     const pStem = new THREE.Shape();
-    pStem.moveTo(-0.32, -0.24);
-    pStem.lineTo(-0.20, -0.24);
-    pStem.lineTo(-0.20, 0.24);
-    pStem.lineTo(-0.32, 0.24);
+    pStem.moveTo(-0.42, -0.34);
+    pStem.lineTo(-0.26, -0.34);
+    pStem.lineTo(-0.26, 0.34);
+    pStem.lineTo(-0.42, 0.34);
     pStem.closePath();
 
-    // Letter P Loop
+    // Letter P Outer Loop
     const pShape = new THREE.Shape();
-    pShape.moveTo(-0.20, 0.02);
+    pShape.moveTo(-0.26, 0.02);
     pShape.lineTo(-0.02, 0.02);
-    pShape.quadraticCurveTo(0.12, 0.02, 0.12, 0.13);
-    pShape.quadraticCurveTo(0.12, 0.24, -0.02, 0.24);
-    pShape.lineTo(-0.20, 0.24);
+    pShape.quadraticCurveTo(0.16, 0.02, 0.16, 0.18);
+    pShape.quadraticCurveTo(0.16, 0.34, -0.02, 0.34);
+    pShape.lineTo(-0.26, 0.34);
     pShape.closePath();
 
     const holeP = new THREE.Path();
-    holeP.moveTo(-0.10, 0.08);
-    holeP.lineTo(-0.02, 0.08);
-    holeP.quadraticCurveTo(0.03, 0.08, 0.03, 0.13);
-    holeP.quadraticCurveTo(0.03, 0.18, -0.02, 0.18);
-    holeP.lineTo(-0.10, 0.18);
+    holeP.moveTo(-0.14, 0.10);
+    holeP.lineTo(-0.02, 0.10);
+    holeP.quadraticCurveTo(0.04, 0.10, 0.04, 0.18);
+    holeP.quadraticCurveTo(0.04, 0.26, -0.02, 0.26);
+    holeP.lineTo(-0.14, 0.26);
     holeP.closePath();
     pShape.holes.push(holeP);
 
     // Letter r Stem
     const rStem = new THREE.Shape();
-    rStem.moveTo(0.04, -0.24);
-    rStem.lineTo(0.14, -0.24);
-    rStem.lineTo(0.14, 0.06);
-    rStem.lineTo(0.04, 0.06);
+    rStem.moveTo(0.06, -0.34);
+    rStem.lineTo(0.20, -0.34);
+    rStem.lineTo(0.20, 0.08);
+    rStem.lineTo(0.06, 0.08);
     rStem.closePath();
 
     // Letter r Arch
     const rArch = new THREE.Shape();
-    rArch.moveTo(0.14, -0.04);
-    rArch.quadraticCurveTo(0.20, 0.06, 0.32, 0.06);
-    rArch.lineTo(0.32, -0.02);
-    rArch.quadraticCurveTo(0.24, -0.02, 0.14, -0.10);
+    rArch.moveTo(0.20, -0.05);
+    rArch.quadraticCurveTo(0.28, 0.08, 0.42, 0.08);
+    rArch.lineTo(0.42, -0.04);
+    rArch.quadraticCurveTo(0.32, -0.04, 0.20, -0.15);
     rArch.closePath();
 
     // Letter r Dot
     const rDot = new THREE.Shape();
-    rDot.absarc(0.09, 0.16, 0.045, 0, Math.PI * 2, false);
+    rDot.absarc(0.13, 0.23, 0.065, 0, Math.PI * 2, false);
 
     return { pShape, pStem, rStem, rArch, rDot };
   }, []);
 
   const extrudeOpts = {
-    depth: 0.08,
+    depth: 0.10,
     bevelEnabled: true,
-    bevelThickness: 0.025,
-    bevelSize: 0.02,
-    bevelSegments: 4,
+    bevelThickness: 0.03,
+    bevelSize: 0.025,
+    bevelSegments: 5,
   };
 
   const mat = (
     <meshPhysicalMaterial
-      color={color}
+      color="#e2e2ff"
       metalness={0.9}
-      roughness={0.12}
+      roughness={0.10}
       clearcoat={1.0}
-      clearcoatRoughness={0.05}
+      clearcoatRoughness={0.03}
       reflectivity={1.0}
       emissive={color}
-      emissiveIntensity={0.35}
+      emissiveIntensity={0.75}
     />
   );
 
   return (
-    <group position={[0, 0, 0.12]}>
+    <group position={[0, 0, 0.28]}>
       <mesh castShadow receiveShadow>
         <extrudeGeometry args={[pStem, extrudeOpts]} />
         {mat}
@@ -110,60 +110,60 @@ function IllustratorLogo3D({ color }: { color: string }) {
   const { aShape, iStem, iDot } = useMemo(() => {
     // Letter A
     const aShape = new THREE.Shape();
-    aShape.moveTo(-0.28, -0.24);
-    aShape.lineTo(-0.16, -0.24);
-    aShape.lineTo(-0.10, -0.04);
-    aShape.lineTo(0.02, -0.04);
-    aShape.lineTo(0.08, -0.24);
-    aShape.lineTo(0.20, -0.24);
-    aShape.lineTo(-0.04, 0.24);
-    aShape.lineTo(-0.04, 0.24);
+    aShape.moveTo(-0.36, -0.34);
+    aShape.lineTo(-0.20, -0.34);
+    aShape.lineTo(-0.12, -0.06);
+    aShape.lineTo(0.04, -0.06);
+    aShape.lineTo(0.12, -0.34);
+    aShape.lineTo(0.28, -0.34);
+    aShape.lineTo(-0.04, 0.34);
     aShape.closePath();
 
     const holeA = new THREE.Path();
-    holeA.moveTo(-0.07, 0.06);
-    holeA.lineTo(0.00, 0.06);
-    holeA.lineTo(-0.04, 0.18);
+    holeA.moveTo(-0.08, 0.08);
+    holeA.lineTo(0.00, 0.08);
+    holeA.lineTo(-0.04, 0.24);
     holeA.closePath();
     aShape.holes.push(holeA);
 
     // Letter i Stem
     const iStem = new THREE.Shape();
-    iStem.moveTo(0.12, -0.24);
-    iStem.lineTo(0.24, -0.24);
-    iStem.lineTo(0.24, 0.06);
-    iStem.lineTo(0.12, 0.06);
+    iStem.moveTo(0.18, -0.34);
+    iStem.lineTo(0.32, -0.34);
+    iStem.lineTo(0.32, 0.08);
+    iStem.lineTo(0.18, 0.08);
     iStem.closePath();
 
     // Letter i Dot
     const iDot = new THREE.Shape();
-    iDot.absarc(0.18, 0.17, 0.05, 0, Math.PI * 2, false);
+    iDot.absarc(0.25, 0.23, 0.065, 0, Math.PI * 2, false);
 
     return { aShape, iStem, iDot };
   }, []);
 
   const extrudeOpts = {
-    depth: 0.08,
+    depth: 0.10,
     bevelEnabled: true,
-    bevelThickness: 0.025,
-    bevelSize: 0.02,
-    bevelSegments: 4,
+    bevelThickness: 0.03,
+    bevelSize: 0.025,
+    bevelSegments: 5,
   };
 
   const mat = (
     <meshPhysicalMaterial
-      color={color}
+      color="#fff0e0"
       metalness={0.9}
-      roughness={0.12}
+      roughness={0.10}
       clearcoat={1.0}
+      clearcoatRoughness={0.03}
       reflectivity={1.0}
       emissive={color}
-      emissiveIntensity={0.35}
+      emissiveIntensity={0.75}
     />
   );
 
   return (
-    <group position={[0, 0, 0.12]}>
+    <group position={[0, 0, 0.28]}>
       <mesh castShadow receiveShadow>
         <extrudeGeometry args={[aShape, extrudeOpts]} />
         {mat}
@@ -184,74 +184,75 @@ function PhotoshopLogo3D({ color }: { color: string }) {
   const { pStem, pLoop, sShape } = useMemo(() => {
     // P Stem
     const pStem = new THREE.Shape();
-    pStem.moveTo(-0.32, -0.24);
-    pStem.lineTo(-0.20, -0.24);
-    pStem.lineTo(-0.20, 0.24);
-    pStem.lineTo(-0.32, 0.24);
+    pStem.moveTo(-0.42, -0.34);
+    pStem.lineTo(-0.26, -0.34);
+    pStem.lineTo(-0.26, 0.34);
+    pStem.lineTo(-0.42, 0.34);
     pStem.closePath();
 
     // P Loop
     const pLoop = new THREE.Shape();
-    pLoop.moveTo(-0.20, 0.02);
+    pLoop.moveTo(-0.26, 0.02);
     pLoop.lineTo(-0.02, 0.02);
-    pLoop.quadraticCurveTo(0.10, 0.02, 0.10, 0.13);
-    pLoop.quadraticCurveTo(0.10, 0.24, -0.02, 0.24);
-    pLoop.lineTo(-0.20, 0.24);
+    pLoop.quadraticCurveTo(0.14, 0.02, 0.14, 0.18);
+    pLoop.quadraticCurveTo(0.14, 0.34, -0.02, 0.34);
+    pLoop.lineTo(-0.26, 0.34);
     pLoop.closePath();
 
     const holeP = new THREE.Path();
-    holeP.moveTo(-0.10, 0.08);
-    holeP.lineTo(-0.02, 0.08);
-    holeP.quadraticCurveTo(0.02, 0.08, 0.02, 0.13);
-    holeP.quadraticCurveTo(0.02, 0.18, -0.02, 0.18);
-    holeP.lineTo(-0.10, 0.18);
+    holeP.moveTo(-0.14, 0.10);
+    holeP.lineTo(-0.02, 0.10);
+    holeP.quadraticCurveTo(0.04, 0.10, 0.04, 0.18);
+    holeP.quadraticCurveTo(0.04, 0.26, -0.02, 0.26);
+    holeP.lineTo(-0.14, 0.26);
     holeP.closePath();
     pLoop.holes.push(holeP);
 
-    // Letter s
+    // Letter S
     const sShape = new THREE.Shape();
-    sShape.moveTo(0.04, -0.24);
-    sShape.lineTo(0.26, -0.24);
-    sShape.lineTo(0.26, -0.16);
-    sShape.lineTo(0.12, -0.16);
-    sShape.quadraticCurveTo(0.08, -0.16, 0.08, -0.12);
-    sShape.quadraticCurveTo(0.08, -0.08, 0.22, -0.04);
-    sShape.quadraticCurveTo(0.28, 0.00, 0.28, 0.08);
-    sShape.quadraticCurveTo(0.28, 0.18, 0.16, 0.18);
-    sShape.lineTo(0.02, 0.18);
-    sShape.lineTo(0.02, 0.10);
-    sShape.lineTo(0.16, 0.10);
-    sShape.quadraticCurveTo(0.20, 0.10, 0.20, 0.06);
-    sShape.quadraticCurveTo(0.20, 0.02, 0.08, -0.02);
-    sShape.quadraticCurveTo(0.02, -0.06, 0.02, -0.14);
-    sShape.quadraticCurveTo(0.02, -0.24, 0.14, -0.24);
+    sShape.moveTo(0.06, -0.34);
+    sShape.lineTo(0.36, -0.34);
+    sShape.lineTo(0.36, -0.22);
+    sShape.lineTo(0.18, -0.22);
+    sShape.quadraticCurveTo(0.12, -0.22, 0.12, -0.16);
+    sShape.quadraticCurveTo(0.12, -0.10, 0.30, -0.04);
+    sShape.quadraticCurveTo(0.38, 0.02, 0.38, 0.14);
+    sShape.quadraticCurveTo(0.38, 0.34, 0.20, 0.34);
+    sShape.lineTo(0.02, 0.34);
+    sShape.lineTo(0.02, 0.22);
+    sShape.lineTo(0.20, 0.22);
+    sShape.quadraticCurveTo(0.26, 0.22, 0.26, 0.16);
+    sShape.quadraticCurveTo(0.26, 0.10, 0.10, 0.04);
+    sShape.quadraticCurveTo(0.02, -0.02, 0.02, -0.14);
+    sShape.quadraticCurveTo(0.02, -0.34, 0.18, -0.34);
     sShape.closePath();
 
     return { pStem, pLoop, sShape };
   }, []);
 
   const extrudeOpts = {
-    depth: 0.08,
+    depth: 0.10,
     bevelEnabled: true,
-    bevelThickness: 0.025,
-    bevelSize: 0.02,
-    bevelSegments: 4,
+    bevelThickness: 0.03,
+    bevelSize: 0.025,
+    bevelSegments: 5,
   };
 
   const mat = (
     <meshPhysicalMaterial
-      color={color}
+      color="#e0f4ff"
       metalness={0.9}
-      roughness={0.12}
+      roughness={0.10}
       clearcoat={1.0}
+      clearcoatRoughness={0.03}
       reflectivity={1.0}
       emissive={color}
-      emissiveIntensity={0.35}
+      emissiveIntensity={0.75}
     />
   );
 
   return (
-    <group position={[0, 0, 0.12]}>
+    <group position={[0, 0, 0.28]}>
       <mesh castShadow receiveShadow>
         <extrudeGeometry args={[pStem, extrudeOpts]} />
         {mat}
@@ -272,63 +273,64 @@ function AfterEffectsLogo3D({ color }: { color: string }) {
   const { aShape, eShape } = useMemo(() => {
     // Letter A
     const aShape = new THREE.Shape();
-    aShape.moveTo(-0.28, -0.24);
-    aShape.lineTo(-0.16, -0.24);
-    aShape.lineTo(-0.10, -0.04);
-    aShape.lineTo(0.02, -0.04);
-    aShape.lineTo(0.08, -0.24);
-    aShape.lineTo(0.20, -0.24);
-    aShape.lineTo(-0.04, 0.24);
+    aShape.moveTo(-0.38, -0.34);
+    aShape.lineTo(-0.22, -0.34);
+    aShape.lineTo(-0.14, -0.06);
+    aShape.lineTo(0.04, -0.06);
+    aShape.lineTo(0.12, -0.34);
+    aShape.lineTo(0.28, -0.34);
+    aShape.lineTo(-0.04, 0.34);
     aShape.closePath();
 
     const holeA = new THREE.Path();
-    holeA.moveTo(-0.07, 0.06);
-    holeA.lineTo(0.00, 0.06);
-    holeA.lineTo(-0.04, 0.18);
+    holeA.moveTo(-0.08, 0.08);
+    holeA.lineTo(0.00, 0.08);
+    holeA.lineTo(-0.04, 0.24);
     holeA.closePath();
     aShape.holes.push(holeA);
 
     // Letter e
     const eShape = new THREE.Shape();
-    eShape.moveTo(0.04, -0.24);
-    eShape.lineTo(0.28, -0.24);
-    eShape.lineTo(0.28, -0.16);
-    eShape.lineTo(0.14, -0.16);
-    eShape.lineTo(0.14, -0.06);
-    eShape.lineTo(0.26, -0.06);
-    eShape.lineTo(0.26, 0.02);
-    eShape.lineTo(0.14, 0.02);
-    eShape.lineTo(0.14, 0.10);
-    eShape.lineTo(0.28, 0.10);
-    eShape.lineTo(0.28, 0.18);
-    eShape.lineTo(0.04, 0.18);
+    eShape.moveTo(0.06, -0.34);
+    eShape.lineTo(0.38, -0.34);
+    eShape.lineTo(0.38, -0.22);
+    eShape.lineTo(0.20, -0.22);
+    eShape.lineTo(0.20, -0.08);
+    eShape.lineTo(0.34, -0.08);
+    eShape.lineTo(0.34, 0.04);
+    eShape.lineTo(0.20, 0.04);
+    eShape.lineTo(0.20, 0.18);
+    eShape.lineTo(0.38, 0.18);
+    eShape.lineTo(0.38, 0.30);
+    eShape.lineTo(0.06, 0.30);
     eShape.closePath();
 
     return { aShape, eShape };
   }, []);
 
   const extrudeOpts = {
-    depth: 0.08,
+    depth: 0.10,
     bevelEnabled: true,
-    bevelThickness: 0.025,
-    bevelSize: 0.02,
-    bevelSegments: 4,
+    bevelThickness: 0.03,
+    bevelSize: 0.025,
+    bevelSegments: 5,
   };
 
   const mat = (
     <meshPhysicalMaterial
-      color={color}
+      color="#fae8ff"
       metalness={0.9}
-      roughness={0.12}
+      roughness={0.10}
       clearcoat={1.0}
+      clearcoatRoughness={0.03}
       reflectivity={1.0}
       emissive={color}
-      emissiveIntensity={0.35}
+      emissiveIntensity={0.75}
     />
   );
 
   return (
-    <group position={[0, 0, 0.12]}>
+    <group position={[0, 0, 0.28]}>
       <mesh castShadow receiveShadow>
         <extrudeGeometry args={[aShape, extrudeOpts]} />
         {mat}
@@ -343,18 +345,18 @@ function AfterEffectsLogo3D({ color }: { color: string }) {
 
 function DaVinciLogo3D() {
   return (
-    <group position={[0, 0, 0.14]}>
-      <mesh position={[-0.12, 0.12, 0]} castShadow>
-        <cylinderGeometry args={[0.15, 0.15, 0.06, 32]} />
-        <meshPhysicalMaterial color="#ff3344" metalness={0.8} roughness={0.2} emissive="#ff3344" emissiveIntensity={0.4} />
+    <group position={[0, 0, 0.28]}>
+      <mesh position={[-0.18, 0.18, 0]} castShadow>
+        <cylinderGeometry args={[0.22, 0.22, 0.10, 32]} />
+        <meshPhysicalMaterial color="#ff3344" metalness={0.85} roughness={0.15} emissive="#ff3344" emissiveIntensity={0.65} />
       </mesh>
-      <mesh position={[0.12, 0.12, 0]} castShadow>
-        <cylinderGeometry args={[0.15, 0.15, 0.06, 32]} />
-        <meshPhysicalMaterial color="#33cc55" metalness={0.8} roughness={0.2} emissive="#33cc55" emissiveIntensity={0.4} />
+      <mesh position={[0.18, 0.18, 0]} castShadow>
+        <cylinderGeometry args={[0.22, 0.22, 0.10, 32]} />
+        <meshPhysicalMaterial color="#33cc55" metalness={0.85} roughness={0.15} emissive="#33cc55" emissiveIntensity={0.65} />
       </mesh>
-      <mesh position={[0, -0.12, 0]} castShadow>
-        <cylinderGeometry args={[0.15, 0.15, 0.06, 32]} />
-        <meshPhysicalMaterial color="#00aaff" metalness={0.8} roughness={0.2} emissive="#00aaff" emissiveIntensity={0.4} />
+      <mesh position={[0, -0.18, 0]} castShadow>
+        <cylinderGeometry args={[0.22, 0.22, 0.10, 32]} />
+        <meshPhysicalMaterial color="#00aaff" metalness={0.85} roughness={0.15} emissive="#00aaff" emissiveIntensity={0.65} />
       </mesh>
     </group>
   );
@@ -362,16 +364,16 @@ function DaVinciLogo3D() {
 
 function BlenderLogo3D() {
   return (
-    <group position={[0, 0, 0.14]}>
+    <group position={[0, 0, 0.28]}>
       {/* Outer 3D ring */}
       <mesh castShadow>
-        <torusGeometry args={[0.22, 0.04, 16, 32]} />
-        <meshPhysicalMaterial color="#ea7600" metalness={0.85} roughness={0.15} emissive="#ea7600" emissiveIntensity={0.4} />
+        <torusGeometry args={[0.32, 0.06, 16, 32]} />
+        <meshPhysicalMaterial color="#ea7600" metalness={0.9} roughness={0.12} emissive="#ea7600" emissiveIntensity={0.7} />
       </mesh>
       {/* Inner blue eye */}
-      <mesh position={[0, 0, 0.02]} castShadow>
-        <cylinderGeometry args={[0.10, 0.10, 0.05, 32]} />
-        <meshPhysicalMaterial color="#0066cc" metalness={0.9} roughness={0.1} emissive="#0066cc" emissiveIntensity={0.4} />
+      <mesh position={[0, 0, 0.03]} castShadow>
+        <cylinderGeometry args={[0.15, 0.15, 0.08, 32]} />
+        <meshPhysicalMaterial color="#0066cc" metalness={0.9} roughness={0.1} emissive="#0066cc" emissiveIntensity={0.7} />
       </mesh>
     </group>
   );
@@ -420,9 +422,9 @@ function SoftwareCube3D({
   // Rounded 3D tile geometry
   const tileShape = useMemo(() => {
     const tileShape = new THREE.Shape();
-    const width = 1.25;
-    const height = 1.25;
-    const radius = 0.30;
+    const width = 1.65;
+    const height = 1.65;
+    const radius = 0.38;
 
     tileShape.moveTo(-width / 2 + radius, -height / 2);
     tileShape.lineTo(width / 2 - radius, -height / 2);
@@ -439,7 +441,7 @@ function SoftwareCube3D({
   // Outer Beveled 3D Border Geometry
   const borderShape = useMemo(() => {
     const shape = new THREE.Shape();
-    const w = 1.25, h = 1.25, r = 0.30;
+    const w = 1.65, h = 1.65, r = 0.38;
     shape.moveTo(-w / 2 + r, -h / 2);
     shape.lineTo(w / 2 - r, -h / 2);
     shape.quadraticCurveTo(w / 2, -h / 2, w / 2, -h / 2 + r);
@@ -451,7 +453,7 @@ function SoftwareCube3D({
     shape.quadraticCurveTo(-w / 2, -h / 2, -w / 2 + r, -h / 2);
 
     const hole = new THREE.Path();
-    const iw = 1.10, ih = 1.10, ir = 0.24;
+    const iw = 1.48, ih = 1.48, ir = 0.32;
     hole.moveTo(-iw / 2 + ir, -ih / 2);
     hole.lineTo(iw / 2 - ir, -ih / 2);
     hole.quadraticCurveTo(iw / 2, -ih / 2, iw / 2, -ih / 2 + ir);
@@ -499,14 +501,14 @@ function SoftwareCube3D({
         <mesh castShadow receiveShadow>
           <extrudeGeometry args={[tileShape, extrudeTile]} />
           <meshPhysicalMaterial
-            color="#0d0d15"
-            metalness={0.85}
-            roughness={0.15}
+            color="#090912"
+            metalness={0.88}
+            roughness={0.12}
             clearcoat={1.0}
-            clearcoatRoughness={0.05}
+            clearcoatRoughness={0.04}
             reflectivity={1.0}
             emissive={glowColor}
-            emissiveIntensity={hovered ? 0.45 : 0.15}
+            emissiveIntensity={hovered ? 0.45 : 0.18}
           />
         </mesh>
 
@@ -519,11 +521,11 @@ function SoftwareCube3D({
             roughness={0.1}
             clearcoat={1.0}
             emissive={glowColor}
-            emissiveIntensity={0.5}
+            emissiveIntensity={0.6}
           />
         </mesh>
 
-        {/* True 3D Extruded Logo Mesh Geometry */}
+        {/* True 3D Extruded Logo Mesh Geometry (Positioned on Front Face z = 0.28) */}
         {type === "Pr" && <PremiereProLogo3D color={glowColor} />}
         {type === "Ai" && <IllustratorLogo3D color={glowColor} />}
         {type === "Ps" && <PhotoshopLogo3D color={glowColor} />}
@@ -533,7 +535,7 @@ function SoftwareCube3D({
 
         {/* Glowing Back Ring */}
         <mesh position={[0, 0, -0.05]}>
-          <torusGeometry args={[0.82, 0.016, 16, 64]} />
+          <torusGeometry args={[0.98, 0.018, 16, 64]} />
           <meshBasicMaterial color={glowColor} transparent opacity={hovered ? 0.85 : 0.35} />
         </mesh>
       </group>
@@ -622,21 +624,22 @@ export default function HeroScene() {
               antialias: true,
               alpha: true,
               toneMapping: THREE.ACESFilmicToneMapping,
-              toneMappingExposure: 1.5,
+              toneMappingExposure: 1.6,
             }}
           >
             {/* Ambient & Radiant Point Lights */}
-            <ambientLight intensity={0.6} color="#ffb0b0" />
-            <directionalLight position={[4, 8, 6]} intensity={3} color="#ffffff" />
-            <directionalLight position={[-4, 3, -2]} intensity={1.5} color="#ff6655" />
-            <pointLight position={[-4, 2, 2]} intensity={4.5} color="#E23829" distance={16} />
-            <pointLight position={[4, -2, 2]} intensity={3.5} color="#FF5A4D" distance={14} />
+            <ambientLight intensity={0.7} color="#ffc0c0" />
+            <directionalLight position={[4, 8, 6]} intensity={3.5} color="#ffffff" castShadow />
+            <directionalLight position={[-4, 3, -2]} intensity={1.8} color="#ff8877" />
+            <pointLight position={[-4, 2, 3]} intensity={5.0} color="#E23829" distance={18} />
+            <pointLight position={[4, -2, 3]} intensity={4.0} color="#FF5A4D" distance={16} />
+            <pointLight position={[0, 4, 2]} intensity={3.0} color="#ffffff" distance={14} />
 
             <Suspense fallback={null}>
               <ParticleAtmosphere count={2500} />
 
-              {/* True 3D Software Tool Cubes with Extruded 3D Logos */}
-              {/* Left Side 3D Cubes */}
+              {/* True 3D Software Tool Cubes with Front-Face Extruded Logos */}
+              {/* Left Top: Premiere Pro (Pr) Cube */}
               <SoftwareCube3D
                 type="Pr"
                 glowColor="#9999ff"
