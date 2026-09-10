@@ -30,24 +30,27 @@ export default function CustomCursor() {
     };
     animate();
 
-    const onEnter = () => {
-      dot.classList.add("cursor-hover");
-      ring.classList.add("cursor-hover");
-    };
-    const onLeave = () => {
-      dot.classList.remove("cursor-hover");
-      ring.classList.remove("cursor-hover");
+    const onOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        target.closest("a, button, [data-cursor], video, input, textarea, select")
+      ) {
+        dot.classList.add("cursor-hover");
+        ring.classList.add("cursor-hover");
+      } else {
+        dot.classList.remove("cursor-hover");
+        ring.classList.remove("cursor-hover");
+      }
     };
 
     document.addEventListener("mousemove", onMove);
-    document.querySelectorAll("a, button, [data-cursor]").forEach((el) => {
-      el.addEventListener("mouseenter", onEnter);
-      el.addEventListener("mouseleave", onLeave);
-    });
+    document.addEventListener("mouseover", onOver);
 
     return () => {
       cancelAnimationFrame(rafId);
       document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseover", onOver);
     };
   }, []);
 
