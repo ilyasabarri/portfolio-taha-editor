@@ -355,21 +355,21 @@ export default function HeroScene() {
               {/* Left Side 3D Cubes */}
               <SoftwareCube3D
                 type="Pr"
-                position={[-3.8, 2.1, 0.4]}
+                position={[-4.3, 2.6, 0.4]}
                 rotation={[0.15, 0.25, -0.1]}
                 scale={1.1}
                 floatSpeed={2.2}
               />
               <SoftwareCube3D
                 type="Ai"
-                position={[-3.3, 0.4, 1.1]}
+                position={[-3.7, 1.0, 1.1]}
                 rotation={[-0.1, 0.3, 0.15]}
                 scale={1.05}
                 floatSpeed={1.8}
               />
               <SoftwareCube3D
                 type="DaVinci"
-                position={[-4.0, -1.3, 0.1]}
+                position={[-4.4, -0.5, 0.2]}
                 rotation={[0.2, 0.15, -0.05]}
                 scale={0.95}
                 floatSpeed={2.5}
@@ -378,21 +378,21 @@ export default function HeroScene() {
               {/* Right Side 3D Cubes */}
               <SoftwareCube3D
                 type="Ps"
-                position={[3.8, 2.0, 0.6]}
+                position={[4.3, 2.5, 0.6]}
                 rotation={[-0.15, -0.25, 0.1]}
                 scale={1.1}
                 floatSpeed={2.0}
               />
               <SoftwareCube3D
                 type="Ae"
-                position={[3.4, 0.3, 0.8]}
+                position={[3.7, 0.9, 0.8]}
                 rotation={[0.1, -0.2, -0.12]}
                 scale={1.0}
                 floatSpeed={2.4}
               />
               <SoftwareCube3D
                 type="Blender"
-                position={[4.0, -1.4, 0.4]}
+                position={[4.4, -0.6, 0.4]}
                 rotation={[-0.2, -0.1, 0.08]}
                 scale={1.05}
                 floatSpeed={1.9}
