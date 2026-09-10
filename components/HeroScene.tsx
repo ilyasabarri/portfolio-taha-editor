@@ -487,22 +487,18 @@ export default function HeroScene() {
       {/* ── Background Layer 1: Backdrop Text "TAHA" & "ELmaanaoui" (Behind Head on Mobile & Laptop) ── */}
       <div className="absolute inset-0 z-[2] flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-20 pointer-events-none overflow-hidden select-none">
         <div className="relative w-full text-center flex flex-col items-center justify-center">
-          {/* Giant 3D Backdrop Text "TAHA" */}
-          <h1
-            className="tracking-tighter font-extrabold uppercase"
-            style={{
-              fontFamily: '"Bebas Neue", sans-serif',
-              fontSize: "clamp(5.5rem, 25vw, 20rem)",
-              lineHeight: 0.8,
-              background: "linear-gradient(180deg, #FFFFFF 0%, #E0E0E0 45%, #888888 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              filter: "drop-shadow(0 0 45px rgba(226,56,41,0.7)) drop-shadow(0 20px 30px rgba(0,0,0,0.9))",
-              letterSpacing: "0.02em",
-            }}
-          >
-            TAHA
-          </h1>
+          {/* Custom TAHA Graphic Logo Backdrop */}
+          <div className="relative w-[85vw] max-w-4xl flex justify-center px-4">
+            <img
+              src="/taha-title-logo.png"
+              alt="TAHA"
+              className="w-full h-auto object-contain max-h-[28vh] sm:max-h-[34vh] md:max-h-[40vh]"
+              style={{
+                filter:
+                  "drop-shadow(0 0 50px rgba(226,56,41,0.8)) drop-shadow(0 20px 35px rgba(0,0,0,0.95))",
+              }}
+            />
+          </div>
 
           {/* Neon Radiant Red Cursive Script "ELmaanaoui" Overlay */}
           <div
