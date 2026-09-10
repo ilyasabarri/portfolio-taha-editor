@@ -27,25 +27,8 @@ export default function Navigation() {
         borderBottom: scrolled ? "1px solid rgba(255,255,255,0.05)" : "none",
       }}
     >
-      {/* Logo — actual brand PNG */}
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        data-cursor
-        className="group flex items-center"
-        style={{ background: "none", border: "none", padding: 0, cursor: "none" }}
-      >
-        <div
-          className="relative w-[140px] h-[60px] md:w-[240px] md:h-[104px] transition-transform duration-300 ease-out group-hover:scale-105 group-hover:opacity-90"
-        >
-          <Image
-            src="/images/logo.png"
-            alt="North Creative Agency"
-            fill
-            style={{ objectFit: "contain", objectPosition: "left center" }}
-            priority
-          />
-        </div>
-      </button>
+      {/* Top left empty space (logo removed) */}
+      <div />
 
       {/* Right nav */}
       <div className="flex items-center gap-2 md:gap-3">
