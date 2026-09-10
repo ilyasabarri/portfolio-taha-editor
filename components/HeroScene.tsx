@@ -451,8 +451,8 @@ export default function HeroScene() {
   return (
     <section
       id="hero"
-      className="relative w-full overflow-hidden flex flex-col justify-between"
-      style={{ height: "100svh", background: "#040101" }}
+      className="relative w-full overflow-hidden flex flex-col justify-between h-[1000px] max-h-[1000px] md:h-[100svh] md:max-h-none"
+      style={{ background: "#040101" }}
     >
       {/* ── 3D Canvas Background & Floating Software Badges ── */}
       {ready && (
