@@ -30,14 +30,14 @@ export default function Preloader({ onComplete, isReady = false }: PreloaderProp
       );
     }
 
-    // Rotate arrow continuously
+    // Pulse logo continuously
     if (arrowRef.current) {
       gsap.to(arrowRef.current, {
-        rotation: 360,
-        duration: 3,
-        ease: "none",
+        scale: 1.04,
+        duration: 1.8,
+        ease: "sine.inOut",
         repeat: -1,
-        transformOrigin: "50% 50%",
+        yoyo: true,
       });
     }
 
@@ -100,35 +100,50 @@ export default function Preloader({ onComplete, isReady = false }: PreloaderProp
         gap: 0,
       }}
     >
-      {/* Real brand logo */}
+      {/* Taha El Maanaoui Hero Logo Graphic */}
       <div
         ref={arrowRef as any}
-        style={{
-          position: "relative",
-          width: "320px",
-          height: "140px",
-          marginBottom: "1.8rem",
-        }}
+        className="relative w-[85vw] max-w-md flex flex-col items-center justify-center mb-6 select-none"
       >
-        <Image
-          src="/images/logo.png"
-          alt="Taha El Maanaoui — Video Editor"
-          fill
-          style={{ objectFit: "contain" }}
-          priority
-        />
+        <div className="relative w-full flex justify-center">
+          <img
+            src="/taha-title-logo.png"
+            alt="TAHA"
+            className="w-full h-auto object-contain max-h-[110px] sm:max-h-[140px]"
+            style={{
+              filter:
+                "drop-shadow(0 0 35px rgba(226,56,41,0.85)) drop-shadow(0 15px 30px rgba(0,0,0,0.95))",
+            }}
+          />
+        </div>
+        <div
+          className="absolute z-20 font-bold"
+          style={{
+            top: "44%",
+            left: "50%",
+            transform: "translate(-50%, -50%) rotate(-3deg)",
+            fontFamily: '"Dancing Script", "Brush Script MT", cursive',
+            fontSize: "clamp(2.2rem, 7vw, 4.5rem)",
+            color: "#FFF0F0",
+            textShadow:
+              "0 0 10px #FF5A4D, 0 0 25px #E23829, 0 0 45px #E23829",
+            whiteSpace: "nowrap",
+          }}
+        >
+          ELmaanaoui
+        </div>
       </div>
 
-      {/* Brand name */}
+      {/* Brand subtitle */}
       <div style={{
         fontFamily: "var(--font-space-mono), monospace",
         fontSize: "0.6rem",
         letterSpacing: "0.6em",
         color: "rgba(255,255,255,0.4)",
-        marginBottom: "3.5rem",
+        marginBottom: "2.5rem",
         textAlign: "center",
       }}>
-        TAHA&nbsp;&nbsp;EL&nbsp;&nbsp;MAANAOUI
+        VIDEO&nbsp;&nbsp;EDITOR&nbsp;&nbsp;&amp;&nbsp;&nbsp;3D&nbsp;&nbsp;ARTIST
       </div>
 
       {/* Big counter */}
