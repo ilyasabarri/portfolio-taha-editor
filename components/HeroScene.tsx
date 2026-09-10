@@ -361,6 +361,81 @@ function ParticleAtmosphere({ count = 2500 }: { count?: number }) {
   );
 }
 
+/* ─── Responsive 3D Scene Controller ────────────────────────── */
+function ResponsiveScene() {
+  const { camera, size } = useThree();
+  const isMobile = size.width < 768;
+
+  useEffect(() => {
+    if (isMobile) {
+      camera.position.z = 10.8; // Pull back camera on mobile phone screens so all 3D cubes fit!
+    } else {
+      camera.position.z = 7.5;
+    }
+    camera.updateProjectionMatrix();
+  }, [camera, size.width, isMobile]);
+
+  // Adjust horizontal spread and scaling dynamically for mobile vs desktop
+  const xMult = isMobile ? 0.65 : 1.0;
+  const scaleMult = isMobile ? 0.85 : 1.0;
+
+  return (
+    <>
+      {/* Left Side 3D Cubes */}
+      <SoftwareCube3D
+        type="Pr"
+        position={[-4.4 * xMult, isMobile ? 2.6 : 2.1, 0.4]}
+        rotation={[0.15, 0.25, -0.1]}
+        scale={0.75 * scaleMult}
+        floatSpeed={1.8}
+        floatIntensity={0.25}
+      />
+      <SoftwareCube3D
+        type="Ai"
+        position={[-3.7 * xMult, isMobile ? 0.6 : 0.1, 1.0]}
+        rotation={[-0.1, 0.3, 0.15]}
+        scale={0.72 * scaleMult}
+        floatSpeed={1.5}
+        floatIntensity={0.22}
+      />
+      <SoftwareCube3D
+        type="DaVinci"
+        position={[-4.5 * xMult, isMobile ? -1.5 : -1.9, 0.2]}
+        rotation={[0.2, 0.15, -0.05]}
+        scale={0.70 * scaleMult}
+        floatSpeed={2.0}
+        floatIntensity={0.25}
+      />
+
+      {/* Right Side 3D Cubes */}
+      <SoftwareCube3D
+        type="Ps"
+        position={[4.4 * xMult, isMobile ? 2.5 : 2.0, 0.6]}
+        rotation={[-0.15, -0.25, 0.1]}
+        scale={0.75 * scaleMult}
+        floatSpeed={1.7}
+        floatIntensity={0.25}
+      />
+      <SoftwareCube3D
+        type="Ae"
+        position={[3.7 * xMult, isMobile ? 0.5 : 0.0, 0.8]}
+        rotation={[0.1, -0.2, -0.12]}
+        scale={0.72 * scaleMult}
+        floatSpeed={1.9}
+        floatIntensity={0.22}
+      />
+      <SoftwareCube3D
+        type="Blender"
+        position={[4.5 * xMult, isMobile ? -1.6 : -2.0, 0.4]}
+        rotation={[-0.2, -0.1, 0.08]}
+        scale={0.70 * scaleMult}
+        floatSpeed={1.6}
+        floatIntensity={0.25}
+      />
+    </>
+  );
+}
+
 /* ─── Hero Section Component ────────────────────────────────── */
 export default function HeroScene() {
   const { t } = useLang();
@@ -402,75 +477,22 @@ export default function HeroScene() {
 
             <Suspense fallback={null}>
               <ParticleAtmosphere count={2500} />
-
-              {/* 3D Software Tool Cubes Spaced & Balanced with Wide Breathing Room */}
-              {/* Left Side 3D Cubes */}
-              <SoftwareCube3D
-                type="Pr"
-                position={[-4.4, 2.1, 0.4]}
-                rotation={[0.15, 0.25, -0.1]}
-                scale={0.75}
-                floatSpeed={1.8}
-                floatIntensity={0.25}
-              />
-              <SoftwareCube3D
-                type="Ai"
-                position={[-3.7, 0.1, 1.0]}
-                rotation={[-0.1, 0.3, 0.15]}
-                scale={0.72}
-                floatSpeed={1.5}
-                floatIntensity={0.22}
-              />
-              <SoftwareCube3D
-                type="DaVinci"
-                position={[-4.5, -1.9, 0.2]}
-                rotation={[0.2, 0.15, -0.05]}
-                scale={0.70}
-                floatSpeed={2.0}
-                floatIntensity={0.25}
-              />
-
-              {/* Right Side 3D Cubes */}
-              <SoftwareCube3D
-                type="Ps"
-                position={[4.4, 2.0, 0.6]}
-                rotation={[-0.15, -0.25, 0.1]}
-                scale={0.75}
-                floatSpeed={1.7}
-                floatIntensity={0.25}
-              />
-              <SoftwareCube3D
-                type="Ae"
-                position={[3.7, 0.0, 0.8]}
-                rotation={[0.1, -0.2, -0.12]}
-                scale={0.72}
-                floatSpeed={1.9}
-                floatIntensity={0.22}
-              />
-              <SoftwareCube3D
-                type="Blender"
-                position={[4.5, -2.0, 0.4]}
-                rotation={[-0.2, -0.1, 0.08]}
-                scale={0.70}
-                floatSpeed={1.6}
-                floatIntensity={0.25}
-              />
-
+              <ResponsiveScene />
               <Environment preset="studio" />
             </Suspense>
           </Canvas>
         </div>
       )}
 
-      {/* ── Background Layer 1: Backdrop Text "TAHA" & "ELmaanaoui" (Shifted High Up Behind Head) ── */}
-      <div className="absolute inset-0 z-[2] flex flex-col items-center justify-start pt-16 md:pt-20 pointer-events-none overflow-hidden select-none">
+      {/* ── Background Layer 1: Backdrop Text "TAHA" & "ELmaanaoui" (Behind Head on Mobile & Laptop) ── */}
+      <div className="absolute inset-0 z-[2] flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-20 pointer-events-none overflow-hidden select-none">
         <div className="relative w-full text-center flex flex-col items-center justify-center">
           {/* Giant 3D Backdrop Text "TAHA" */}
           <h1
             className="tracking-tighter font-extrabold uppercase"
             style={{
               fontFamily: '"Bebas Neue", sans-serif',
-              fontSize: "clamp(6.5rem, 21vw, 20rem)",
+              fontSize: "clamp(5.5rem, 25vw, 20rem)",
               lineHeight: 0.8,
               background: "linear-gradient(180deg, #FFFFFF 0%, #E0E0E0 45%, #888888 100%)",
               WebkitBackgroundClip: "text",
@@ -486,11 +508,11 @@ export default function HeroScene() {
           <div
             className="absolute z-20 font-bold"
             style={{
-              top: "42%",
+              top: "44%",
               left: "50%",
               transform: "translate(-50%, -50%) rotate(-3deg)",
               fontFamily: '"Dancing Script", "Brush Script MT", cursive',
-              fontSize: "clamp(3.2rem, 10vw, 9.5rem)",
+              fontSize: "clamp(3.0rem, 11vw, 9.5rem)",
               color: "#FFF0F0",
               textShadow:
                 "0 0 10px #FF5A4D, 0 0 25px #E23829, 0 0 50px #E23829, 0 0 80px #841512",
@@ -502,10 +524,10 @@ export default function HeroScene() {
         </div>
       </div>
 
-      {/* ── Center Layer 2: Ultra-Large 3D Hero Person Cutout (Spans Bottom to Top) ── */}
+      {/* ── Center Layer 2: Ultra-Large 3D Hero Person Cutout (Spans Bottom to Top on Mobile & Laptop) ── */}
       <div className="absolute inset-0 z-[3] flex items-end justify-center pointer-events-none overflow-hidden">
         <div
-          className="relative w-full max-w-4xl h-[92vh] md:h-[95vh] flex items-end justify-center"
+          className="relative w-full max-w-4xl h-[88vh] sm:h-[92vh] md:h-[95vh] flex items-end justify-center"
           style={{
             filter:
               "drop-shadow(0 0 40px rgba(226,56,41,0.5)) drop-shadow(0 25px 45px rgba(0,0,0,0.95))",
@@ -514,9 +536,9 @@ export default function HeroScene() {
           <img
             src="/taha-hero.png"
             alt="Taha ELmaanaoui - Video Editor & 3D Artist"
-            className="h-full w-auto object-contain object-bottom scale-105 md:scale-110 transform transition-transform duration-700 ease-out"
+            className="h-full w-auto max-w-none md:max-w-full object-contain object-bottom scale-[1.28] sm:scale-110 md:scale-110 transform transition-transform duration-700 ease-out translate-y-3 sm:translate-y-0"
             style={{
-              maxHeight: "95vh",
+              maxHeight: "94vh",
               maskImage: "linear-gradient(to top, black 85%, transparent 100%)",
               WebkitMaskImage: "linear-gradient(to top, black 88%, transparent 100%)",
             }}
