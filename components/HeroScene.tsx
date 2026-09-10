@@ -520,21 +520,34 @@ export default function HeroScene() {
         </div>
       </div>
 
-      {/* ── Center Layer 2: Ultra-Large 3D Hero Person Cutout (Spans Bottom to Top on Mobile & Laptop) ── */}
+      {/* ── Center Layer 2: 3D Hero Person Cutout (Mobile & Desktop Responsive Images) ── */}
       <div className="absolute inset-0 z-[3] flex items-end justify-center pointer-events-none overflow-hidden">
         <div
-          className="relative w-full max-w-4xl h-[88vh] sm:h-[92vh] md:h-[95vh] flex items-end justify-center"
+          className="relative w-full max-w-4xl h-[82vh] sm:h-[88vh] md:h-[95vh] flex items-end justify-center"
           style={{
             filter:
               "drop-shadow(0 0 40px rgba(226,56,41,0.5)) drop-shadow(0 25px 45px rgba(0,0,0,0.95))",
           }}
         >
+          {/* Desktop / Laptop Hero Cutout */}
           <img
             src="/taha-hero.png"
             alt="Taha ELmaanaoui - Video Editor & 3D Artist"
-            className="h-full w-auto max-w-none md:max-w-full object-contain object-bottom scale-[1.28] sm:scale-110 md:scale-110 transform transition-transform duration-700 ease-out translate-y-3 sm:translate-y-0"
+            className="hidden md:block h-full w-auto max-w-full object-contain object-bottom scale-110 transform transition-transform duration-700 ease-out"
             style={{
-              maxHeight: "94vh",
+              maxHeight: "95vh",
+              maskImage: "linear-gradient(to top, black 88%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to top, black 88%, transparent 100%)",
+            }}
+          />
+
+          {/* Mobile / Phone Optimized Hero Cutout */}
+          <img
+            src="/taha-hero-mobile.png"
+            alt="Taha ELmaanaoui - Video Editor & 3D Artist"
+            className="block md:hidden h-full w-auto object-contain object-bottom scale-100 transform transition-transform duration-700 ease-out"
+            style={{
+              maxHeight: "82vh",
               maskImage: "linear-gradient(to top, black 85%, transparent 100%)",
               WebkitMaskImage: "linear-gradient(to top, black 88%, transparent 100%)",
             }}
