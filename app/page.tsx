@@ -132,7 +132,12 @@ const MARQUEE_2 = [
 ];
 
 export default function Home() {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(() => {
+    if (typeof window !== "undefined") {
+      return sessionStorage.getItem("hasSeenPreloader") === "true";
+    }
+    return false;
+  });
   const [threeReady, setThreeReady] = useState(false);
 
   // Safety fallback: ensure preloader never freezes if WebGL disabled
@@ -143,6 +148,13 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
+  const handlePreloaderComplete = () => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("hasSeenPreloader", "true");
+    }
+    setLoaded(true);
+  };
+
   return (
     <>
       {/* Noise overlay */}
@@ -151,11 +163,11 @@ export default function Home() {
       {/* Custom cursor */}
       <CustomCursor />
 
-      {/* Preloader — syncs with 3D canvas initialization */}
+      {/* Preloader — syncs with 3D canvas initialization (First visit only) */}
       {!loaded && (
         <Preloader
           isReady={threeReady}
-          onComplete={() => setLoaded(true)}
+          onComplete={handlePreloaderComplete}
         />
       )}
 
@@ -163,7 +175,7 @@ export default function Home() {
       <main
         style={{
           opacity: loaded ? 1 : 0,
-          transition: "opacity 0.6s ease 0.2s",
+          transition: loaded ? "opacity 0.6s ease 0.2s" : "none",
         }}
       >
         {/* Navigation */}
