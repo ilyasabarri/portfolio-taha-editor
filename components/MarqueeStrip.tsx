@@ -20,15 +20,15 @@ export default function MarqueeStrip({
       style={{
         overflow: "hidden",
         borderTop: accent
-          ? "1px solid rgba(200,255,0,0.15)"
-          : "1px solid rgba(0,25,255,0.25)",
+          ? "1px solid rgba(255,90,77,0.2)"
+          : "1px solid rgba(226,56,41,0.25)",
         borderBottom: accent
-          ? "1px solid rgba(200,255,0,0.15)"
-          : "1px solid rgba(0,25,255,0.25)",
+          ? "1px solid rgba(255,90,77,0.2)"
+          : "1px solid rgba(226,56,41,0.25)",
         padding: "0.85rem 0",
         background: accent
-          ? "rgba(200,255,0,0.03)"
-          : "rgba(0,25,255,0.04)",
+          ? "rgba(255,90,77,0.04)"
+          : "rgba(226,56,41,0.05)",
       }}
     >
       <div
@@ -54,11 +54,12 @@ export default function MarqueeStrip({
             <span
               style={{
                 fontFamily: "var(--font-space-mono), monospace",
-                fontSize: "0.65rem",
-                letterSpacing: "0.3em",
+                fontSize: "0.75rem",
+                letterSpacing: "0.25em",
+                fontWeight: 600,
                 color: accent
-                  ? "rgba(200,255,0,0.7)"
-                  : "rgba(255,255,255,0.55)",
+                  ? "rgba(255,180,180,0.85)"
+                  : "rgba(255,255,255,0.85)",
                 whiteSpace: "nowrap",
               }}
             >
@@ -66,9 +67,9 @@ export default function MarqueeStrip({
             </span>
             <span
               style={{
-                fontSize: "0.35rem",
-                color: accent ? "#C8FF00" : "#0019FF",
-                opacity: 0.7,
+                fontSize: "0.45rem",
+                color: accent ? "#FF5A4D" : "#E23829",
+                opacity: 0.85,
               }}
             >
               ◆
