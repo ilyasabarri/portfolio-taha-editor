@@ -348,23 +348,6 @@ export default function HeroScene() {
             ELmaanaoui
           </div>
         </div>
-
-        {/* Central Hero Portrait Cutout */}
-        <div
-          className="absolute bottom-0 z-10 w-[340px] sm:w-[450px] md:w-[620px] lg:w-[720px] h-[75vh] transition-transform duration-700 ease-out"
-          style={{
-            maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
-          }}
-        >
-          <Image
-            src="/images/taha-hero.png"
-            alt="Taha Elmaanaoui"
-            fill
-            style={{ objectFit: "contain", objectPosition: "bottom center" }}
-            priority
-          />
-        </div>
       </div>
 
       {/* ── Floating Software Badges (HTML Overlay with 3D feel for crisp branding) ── */}
