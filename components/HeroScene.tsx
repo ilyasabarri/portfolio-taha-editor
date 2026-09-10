@@ -436,15 +436,19 @@ function ResponsiveScene() {
   );
 }
 
+interface HeroSceneProps {
+  onReady?: () => void;
+}
+
 /* ─── Hero Section Component ────────────────────────────────── */
-export default function HeroScene() {
+export default function HeroScene({ onReady }: HeroSceneProps = {}) {
   const { t } = useLang();
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const id = setTimeout(() => {
       setReady(true);
-    }, 100);
+    }, 50);
     return () => clearTimeout(id);
   }, []);
 
@@ -458,6 +462,11 @@ export default function HeroScene() {
       {ready && (
         <div className="absolute inset-0" style={{ zIndex: 1 }}>
           <Canvas
+            onCreated={() => {
+              if (onReady) {
+                setTimeout(onReady, 150);
+              }
+            }}
             camera={{ position: [0, 0, 7.5], fov: 50 }}
             dpr={[1, 1.5]}
             gl={{

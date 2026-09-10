@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Preloader from "@/components/Preloader";
 import CustomCursor from "@/components/CustomCursor";
@@ -133,6 +133,15 @@ const MARQUEE_2 = [
 
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
+  const [threeReady, setThreeReady] = useState(false);
+
+  // Safety fallback: ensure preloader never freezes if WebGL disabled
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setThreeReady(true);
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
@@ -142,8 +151,13 @@ export default function Home() {
       {/* Custom cursor */}
       <CustomCursor />
 
-      {/* Preloader */}
-      {!loaded && <Preloader onComplete={() => setLoaded(true)} />}
+      {/* Preloader — syncs with 3D canvas initialization */}
+      {!loaded && (
+        <Preloader
+          isReady={threeReady}
+          onComplete={() => setLoaded(true)}
+        />
+      )}
 
       {/* Main site */}
       <main
@@ -156,7 +170,7 @@ export default function Home() {
         <Navigation />
 
         {/* Hero — 3D scene */}
-        <HeroScene />
+        <HeroScene onReady={() => setThreeReady(true)} />
 
         {/* Scrolling discipline ticker */}
         <MarqueeStrip items={DISCIPLINES} speed={32} />

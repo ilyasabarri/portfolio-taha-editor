@@ -5,14 +5,20 @@ import gsap from "gsap";
 
 interface PreloaderProps {
   onComplete: () => void;
+  isReady?: boolean;
 }
 
-export default function Preloader({ onComplete }: PreloaderProps) {
+export default function Preloader({ onComplete, isReady = false }: PreloaderProps) {
   const [count, setCount] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const arrowRef = useRef<SVGSVGElement>(null);
   const logoGroupRef = useRef<SVGGElement>(null);
+  const isReadyRef = useRef(isReady);
+
+  useEffect(() => {
+    isReadyRef.current = isReady;
+  }, [isReady]);
 
   useEffect(() => {
     // Animate logo on mount
@@ -35,24 +41,37 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       });
     }
 
-    let current = 0;
-    const duration = 2600;
+    let currentProgress = 0;
+    const minDuration = 2200; // minimum duration in ms
     const startTime = performance.now();
+    let isDone = false;
 
     const tick = (now: number) => {
+      if (isDone) return;
       const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = progress < 1 ? 1 - Math.pow(1 - progress, 3) : 1;
-      current = Math.round(eased * 100);
-      setCount(current);
+      const baseProgress = Math.min(elapsed / minDuration, 0.92);
+
+      // If 3D canvas is ready, progress up to 100%
+      if (isReadyRef.current) {
+        const remainingTime = Math.max(0, elapsed - minDuration);
+        const finishStep = 0.92 + Math.min((remainingTime + 300) / 500, 0.08);
+        currentProgress = Math.max(baseProgress, finishStep);
+      } else {
+        currentProgress = baseProgress;
+      }
+
+      const eased = currentProgress < 1 ? 1 - Math.pow(1 - currentProgress, 3) : 1;
+      const num = Math.min(Math.round(eased * 100), 100);
+      setCount(num);
 
       if (fillRef.current) {
         fillRef.current.style.transform = `scaleX(${eased})`;
       }
 
-      if (progress < 1) {
+      if (num < 100) {
         requestAnimationFrame(tick);
       } else {
+        isDone = true;
         setTimeout(() => {
           gsap.to(containerRef.current, {
             yPercent: -100,
@@ -60,7 +79,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
             ease: "power4.inOut",
             onComplete,
           });
-        }, 300);
+        }, 200);
       }
     };
     requestAnimationFrame(tick);
