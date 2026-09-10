@@ -487,15 +487,15 @@ export default function HeroScene() {
       {/* ── Background Layer 1: Backdrop Text "TAHA" & "ELmaanaoui" (Behind Head on Mobile & Laptop) ── */}
       <div className="absolute inset-0 z-[2] flex flex-col items-center justify-start pt-20 sm:pt-24 md:pt-20 pointer-events-none overflow-hidden select-none">
         <div className="relative w-full text-center flex flex-col items-center justify-center">
-          {/* Custom TAHA Graphic Logo Backdrop */}
-          <div className="relative w-[85vw] max-w-4xl flex justify-center px-4">
+          {/* Custom TAHA Graphic Logo Backdrop (Enlarged) */}
+          <div className="relative w-[96vw] max-w-6xl flex justify-center px-2">
             <img
               src="/taha-title-logo.png"
               alt="TAHA"
-              className="w-full h-auto object-contain max-h-[28vh] sm:max-h-[34vh] md:max-h-[40vh]"
+              className="w-full h-auto object-contain max-h-[40vh] sm:max-h-[48vh] md:max-h-[58vh] scale-110 sm:scale-115 md:scale-120 transform origin-top transition-transform duration-500"
               style={{
                 filter:
-                  "drop-shadow(0 0 50px rgba(226,56,41,0.8)) drop-shadow(0 20px 35px rgba(0,0,0,0.95))",
+                  "drop-shadow(0 0 60px rgba(226,56,41,0.85)) drop-shadow(0 25px 40px rgba(0,0,0,0.95))",
               }}
             />
           </div>
@@ -504,11 +504,11 @@ export default function HeroScene() {
           <div
             className="absolute z-20 font-bold"
             style={{
-              top: "44%",
+              top: "46%",
               left: "50%",
               transform: "translate(-50%, -50%) rotate(-3deg)",
               fontFamily: '"Dancing Script", "Brush Script MT", cursive',
-              fontSize: "clamp(3.0rem, 11vw, 9.5rem)",
+              fontSize: "clamp(3.5rem, 13vw, 11rem)",
               color: "#FFF0F0",
               textShadow:
                 "0 0 10px #FF5A4D, 0 0 25px #E23829, 0 0 50px #E23829, 0 0 80px #841512",
