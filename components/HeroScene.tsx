@@ -1,144 +1,170 @@
 "use client";
 import { useRef, useEffect, Suspense, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Environment, Float, MeshReflectorMaterial } from "@react-three/drei";
+import { Float, Environment } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
+import Image from "next/image";
 import { useLang } from "@/lib/lang-context";
 
-/* ─── North Arrow 3D ─────────────────────────────────────────── */
-function NorthArrow3D() {
-  const groupRef = useRef<THREE.Group>(null);
-  const innerRef = useRef<THREE.Group>(null);
+/* ─── 3D Software Badge Component ───────────────────────────── */
+interface SoftwareBadgeProps {
+  label: string;
+  sublabel?: string;
+  bgGradient: string[];
+  textColor: string;
+  position: [number, number, number];
+  rotation?: [number, number, number];
+  scale?: number;
+  floatSpeed?: number;
+  floatRotation?: number;
+}
+
+function SoftwareBadge3D({
+  label,
+  sublabel,
+  bgGradient,
+  textColor,
+  position,
+  rotation = [0, 0, 0],
+  scale = 1,
+  floatSpeed = 2,
+  floatRotation = 0.3,
+}: SoftwareBadgeProps) {
+  const meshRef = useRef<THREE.Group>(null);
+  const [hovered, setHovered] = useState(false);
   const { mouse } = useThree();
-  const targetRotY = useRef(0);
-  const targetRotX = useRef(0);
 
   useFrame((state) => {
-    if (!groupRef.current || !innerRef.current) return;
+    if (!meshRef.current) return;
     const t = state.clock.elapsedTime;
-
-    // Smooth mouse tracking
-    targetRotY.current = mouse.x * 0.5 + Math.sin(t * 0.25) * 0.3;
-    targetRotX.current = mouse.y * -0.25 + Math.sin(t * 0.18) * 0.12;
-
-    groupRef.current.rotation.y +=
-      (targetRotY.current - groupRef.current.rotation.y) * 0.06;
-    groupRef.current.rotation.x +=
-      (targetRotX.current - groupRef.current.rotation.x) * 0.06;
-
-    // Subtle inner group bob
-    innerRef.current.position.y = Math.sin(t * 0.6) * 0.08;
-
-    // Pulse scale
-    const pulse = 1 + Math.sin(t * 1.2) * 0.012;
-    innerRef.current.scale.setScalar(pulse);
+    
+    // Smooth mouse parallax
+    const targetX = position[0] + mouse.x * 0.35;
+    const targetY = position[1] + mouse.y * 0.25;
+    
+    meshRef.current.position.x += (targetX - meshRef.current.position.x) * 0.05;
+    meshRef.current.position.y += (targetY - meshRef.current.position.y) * 0.05;
+    
+    // Slight hover tilt & scale pulse
+    const targetScale = hovered ? scale * 1.15 : scale;
+    meshRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
   });
 
-  // Upper arrow shape
-  const arrowShape = new THREE.Shape();
-  arrowShape.moveTo(0, 2.4);       // tip
-  arrowShape.lineTo(-1.05, 0.3);   // left wing
-  arrowShape.lineTo(-0.35, 0.55);  // left inner
-  arrowShape.lineTo(-0.35, -1.1);  // shaft left
-  arrowShape.lineTo(0.35, -1.1);   // shaft right
-  arrowShape.lineTo(0.35, 0.55);   // right inner
-  arrowShape.lineTo(1.05, 0.3);    // right wing
-  arrowShape.closePath();
+  // Create rounded rectangle tile shape
+  const tileShape = new THREE.Shape();
+  const width = 1.1;
+  const height = 1.1;
+  const radius = 0.28;
 
-  // Lower blue tail
-  const tailShape = new THREE.Shape();
-  tailShape.moveTo(-0.35, -1.1);
-  tailShape.lineTo(0, -2.3);
-  tailShape.lineTo(0.35, -1.1);
-  tailShape.closePath();
+  tileShape.moveTo(-width / 2 + radius, -height / 2);
+  tileShape.lineTo(width / 2 - radius, -height / 2);
+  tileShape.quadraticCurveTo(width / 2, -height / 2, width / 2, -height / 2 + radius);
+  tileShape.lineTo(width / 2, height / 2 - radius);
+  tileShape.quadraticCurveTo(width / 2, height / 2, width / 2 - radius, height / 2);
+  tileShape.lineTo(-width / 2 + radius, height / 2);
+  tileShape.quadraticCurveTo(-width / 2, height / 2, -width / 2, height / 2 - radius);
+  tileShape.lineTo(-width / 2, -height / 2 + radius);
+  tileShape.quadraticCurveTo(-width / 2, -height / 2, -width / 2 + radius, -height / 2);
 
   const extrudeSettings = {
-    depth: 0.48,
+    depth: 0.18,
     bevelEnabled: true,
-    bevelThickness: 0.08,
-    bevelSize: 0.055,
-    bevelSegments: 6,
+    bevelThickness: 0.04,
+    bevelSize: 0.03,
+    bevelSegments: 4,
   };
 
   return (
-    <group ref={groupRef}>
-      <group ref={innerRef}>
-        {/* Chrome arrow body */}
-        <mesh castShadow receiveShadow position={[-0.24, 0, 0]}>
-          <extrudeGeometry args={[arrowShape, extrudeSettings]} />
+    <Float
+      speed={floatSpeed}
+      rotationIntensity={floatRotation}
+      floatIntensity={0.8}
+    >
+      <group
+        ref={meshRef}
+        position={position}
+        rotation={rotation}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+      >
+        {/* 3D Rounded Tile Body */}
+        <mesh castShadow receiveShadow>
+          <extrudeGeometry args={[tileShape, extrudeSettings]} />
           <meshPhysicalMaterial
-            color="#d8dff8"
-            metalness={1}
-            roughness={0.04}
-            envMapIntensity={3.5}
-            reflectivity={1}
-            clearcoat={0.8}
-            clearcoatRoughness={0.05}
+            color={bgGradient[0]}
+            metalness={0.65}
+            roughness={0.2}
+            clearcoat={0.9}
+            clearcoatRoughness={0.1}
+            reflectivity={0.9}
+            emissive={bgGradient[1] || bgGradient[0]}
+            emissiveIntensity={hovered ? 0.4 : 0.15}
           />
         </mesh>
 
-        {/* Brand-blue tail */}
-        <mesh castShadow position={[-0.24, 0, 0]}>
-          <extrudeGeometry args={[tailShape, { ...extrudeSettings, depth: 0.48 }]} />
-          <meshPhysicalMaterial
-            color="#E23829"
-            metalness={0.75}
-            roughness={0.15}
-            emissive="#7F1D1D"
-            emissiveIntensity={0.8}
-            envMapIntensity={2.5}
-          />
-        </mesh>
-
-        {/* Red orbit ring */}
-        <mesh rotation={[0, 0, 0]} position={[0, 0, -0.26]}>
-          <torusGeometry args={[2.1, 0.012, 16, 160]} />
-          <meshBasicMaterial color="#E23829" transparent opacity={0.6} />
-        </mesh>
-
-        {/* Radiant coral dashed orbit */}
-        <mesh rotation={[Math.PI * 0.08, 0, Math.PI * 0.08]} position={[0, 0, -0.36]}>
-          <torusGeometry args={[2.55, 0.006, 8, 96]} />
-          <meshBasicMaterial color="#FF5A4D" transparent opacity={0.4} />
-        </mesh>
-
-        {/* Inner glow sphere */}
-        <mesh>
-          <sphereGeometry args={[0.45, 32, 32]} />
-          <meshBasicMaterial color="#FF3322" transparent opacity={0.12} />
+        {/* Outer subtle glow ring */}
+        <mesh position={[0, 0, -0.05]}>
+          <torusGeometry args={[0.72, 0.012, 16, 64]} />
+          <meshBasicMaterial color={textColor} transparent opacity={hovered ? 0.8 : 0.3} />
         </mesh>
       </group>
+    </Float>
+  );
+}
+
+/* ─── 3D Text Backdrop "TAHA" ───────────────────────────────── */
+function BackdropTitle3D() {
+  const groupRef = useRef<THREE.Group>(null);
+  const { mouse } = useThree();
+
+  useFrame((state) => {
+    if (!groupRef.current) return;
+    const t = state.clock.elapsedTime;
+
+    // Gentle mouse tilt
+    groupRef.current.rotation.y = mouse.x * 0.08 + Math.sin(t * 0.3) * 0.02;
+    groupRef.current.rotation.x = -mouse.y * 0.05 + Math.cos(t * 0.25) * 0.015;
+  });
+
+  return (
+    <group ref={groupRef} position={[0, 0.6, -1.8]}>
+      {/* Background red radiant glow orb */}
+      <mesh position={[0, 0, -0.8]}>
+        <sphereGeometry args={[4.2, 32, 32]} />
+        <meshBasicMaterial color="#E23829" transparent opacity={0.18} side={THREE.BackSide} />
+      </mesh>
     </group>
   );
 }
 
-/* ─── Particle field ─────────────────────────────────────────── */
-function ParticleField({ count = 3000 }: { count?: number }) {
+/* ─── Particle Atmosphere ───────────────────────────────────── */
+function ParticleAtmosphere({ count = 2500 }: { count?: number }) {
   const ref = useRef<THREE.Points>(null);
   const { mouse } = useThree();
 
-  const [positions, velocities, colors] = (() => {
+  const [positions, colors] = (() => {
     const pos = new Float32Array(count * 3);
-    const vel = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(2 * Math.random() - 1);
-      const r = 2.5 + Math.random() * 8;
+      const r = 3 + Math.random() * 7;
       pos[i3] = r * Math.sin(phi) * Math.cos(theta);
       pos[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-      pos[i3 + 2] = r * Math.cos(phi) - 1;
-      vel[i3] = (Math.random() - 0.5) * 0.004;
-      vel[i3 + 1] = (Math.random() - 0.5) * 0.004;
-      vel[i3 + 2] = (Math.random() - 0.5) * 0.003;
+      pos[i3 + 2] = r * Math.cos(phi) - 1.5;
+
       const rnd = Math.random();
-      if (rnd < 0.55) { col[i3] = 1.0; col[i3 + 1] = 0.9; col[i3 + 2] = 0.9; } // soft white-pink
-      else if (rnd < 0.82) { col[i3] = 0.88; col[i3 + 1] = 0.22; col[i3 + 2] = 0.16; } // radiant red
-      else { col[i3] = 1.0; col[i3 + 1] = 0.35; col[i3 + 2] = 0.3; } // coral light
+      if (rnd < 0.6) {
+        col[i3] = 0.88; col[i3 + 1] = 0.22; col[i3 + 2] = 0.16; // Radiant red
+      } else if (rnd < 0.85) {
+        col[i3] = 1.0; col[i3 + 1] = 0.45; col[i3 + 2] = 0.35; // Radiant coral
+      } else {
+        col[i3] = 1.0; col[i3 + 1] = 0.9; col[i3 + 2] = 0.9; // Soft white highlight
+      }
     }
-    return [pos, vel, col];
+    return [pos, col];
   })();
 
   const posRef = useRef(positions);
@@ -146,19 +172,8 @@ function ParticleField({ count = 3000 }: { count?: number }) {
   useFrame((state) => {
     if (!ref.current) return;
     const t = state.clock.elapsedTime;
-    const arr = ref.current.geometry.attributes.position.array as Float32Array;
-    for (let i = 0; i < count; i++) {
-      const i3 = i * 3;
-      arr[i3] += velocities[i3] + Math.sin(t * 0.25 + i * 0.07) * 0.0008;
-      arr[i3 + 1] += velocities[i3 + 1] + Math.cos(t * 0.2 + i * 0.05) * 0.0008;
-      arr[i3 + 2] += velocities[i3 + 2];
-      arr[i3] += (mouse.x * 2 - arr[i3]) * 0.0002;
-      arr[i3 + 1] += (mouse.y * 2 - arr[i3 + 1]) * 0.0002;
-      const d = Math.sqrt(arr[i3] ** 2 + arr[i3 + 1] ** 2 + arr[i3 + 2] ** 2);
-      if (d > 11) { arr[i3] *= 0.88; arr[i3 + 1] *= 0.88; arr[i3 + 2] *= 0.88; }
-    }
-    ref.current.geometry.attributes.position.needsUpdate = true;
-    ref.current.rotation.y = t * 0.04;
+    ref.current.rotation.y = t * 0.035;
+    ref.current.rotation.x = Math.sin(t * 0.02) * 0.05;
   });
 
   return (
@@ -167,48 +182,27 @@ function ParticleField({ count = 3000 }: { count?: number }) {
         <bufferAttribute attach="attributes-position" args={[posRef.current, 3]} />
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
-      <pointsMaterial size={0.032} vertexColors transparent opacity={0.75} sizeAttenuation depthWrite={false} />
+      <pointsMaterial
+        size={0.035}
+        vertexColors
+        transparent
+        opacity={0.65}
+        sizeAttenuation
+        depthWrite={false}
+      />
     </points>
   );
 }
 
-/* ─── Ambient glow ───────────────────────────────────────────── */
-function AmbientGlow() {
-  const ref = useRef<THREE.Mesh>(null);
-  useFrame(({ clock }) => {
-    if (!ref.current) return;
-    (ref.current.material as THREE.MeshBasicMaterial).opacity =
-      0.08 + Math.sin(clock.elapsedTime * 0.9) * 0.03;
-  });
-  return (
-    <mesh ref={ref}>
-      <sphereGeometry args={[4, 32, 32]} />
-      <meshBasicMaterial color="#E23829" transparent opacity={0.08} side={THREE.BackSide} />
-    </mesh>
-  );
-}
-
-/* ─── Hero Section ───────────────────────────────────────────── */
+/* ─── Hero Section Component ────────────────────────────────── */
 export default function HeroScene() {
   const { t } = useLang();
   const [ready, setReady] = useState(false);
-  const textRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Delay canvas mount until after hydration
     const id = setTimeout(() => {
       setReady(true);
-      
-      // Text reveal animation
-      if (textRef.current) {
-        gsap.to(textRef.current.querySelectorAll(".line-inner"), {
-          y: "0%",
-          duration: 1.2,
-          stagger: 0.15,
-          ease: "power4.out",
-          delay: 0.2,
-        });
-      }
     }, 100);
     return () => clearTimeout(id);
   }, []);
@@ -216,119 +210,264 @@ export default function HeroScene() {
   return (
     <section
       id="hero"
-      className="relative w-full overflow-hidden"
-      style={{ height: "100svh", background: "#000000" }}
+      ref={containerRef}
+      className="relative w-full overflow-hidden flex flex-col justify-between"
+      style={{ height: "100svh", background: "#050101" }}
     >
-      {/* Three.js Canvas */}
+      {/* ── 3D Canvas Background & Floating Software Badges ── */}
       {ready && (
-        <div className="absolute inset-0" style={{ zIndex: 0 }}>
+        <div className="absolute inset-0" style={{ zIndex: 1 }}>
           <Canvas
-            camera={{ position: [0, 0, 8], fov: 52 }}
+            camera={{ position: [0, 0, 7.5], fov: 50 }}
             dpr={[1, 1.5]}
-            gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.6 }}
+            gl={{
+              antialias: true,
+              alpha: true,
+              toneMapping: THREE.ACESFilmicToneMapping,
+              toneMappingExposure: 1.5,
+            }}
           >
-            {/* Lights */}
-            <ambientLight intensity={0.5} color="#ffb0b0" />
-            <directionalLight position={[4, 8, 6]} intensity={3.5} color="#ffffff" castShadow />
-            <directionalLight position={[-4, 3, -2]} intensity={1.2} color="#ff8080" />
-            <pointLight position={[-5, 4, 3]} intensity={4} color="#E23829" distance={18} />
-            <pointLight position={[5, -3, 2]} intensity={2.5} color="#FF5A4D" distance={14} />
-            <pointLight position={[0, 6, 1]} intensity={2} color="#ffffff" distance={12} />
-            <rectAreaLight
-              position={[3, 2, 5]}
-              rotation={[0, -Math.PI / 5, 0]}
-              width={6}
-              height={6}
-              intensity={5}
-              color="#ffffff"
-            />
+            {/* Ambient & Radiant Point Lights */}
+            <ambientLight intensity={0.6} color="#ffb0b0" />
+            <directionalLight position={[4, 8, 6]} intensity={3} color="#ffffff" />
+            <directionalLight position={[-4, 3, -2]} intensity={1.5} color="#ff6655" />
+            <pointLight position={[-4, 2, 2]} intensity={4.5} color="#E23829" distance={16} />
+            <pointLight position={[4, -2, 2]} intensity={3.5} color="#FF5A4D" distance={14} />
+            <pointLight position={[0, 4, 1]} intensity={2.5} color="#ffffff" distance={12} />
 
             <Suspense fallback={null}>
-              <Float speed={1.4} rotationIntensity={0.25} floatIntensity={0.6}>
-                <NorthArrow3D />
-              </Float>
-              <ParticleField count={3000} />
-              <AmbientGlow />
+              <BackdropTitle3D />
+              <ParticleAtmosphere count={2500} />
+
+              {/* 3D Software Badges Floating Left & Right */}
+              {/* Left Side Badges */}
+              <SoftwareBadge3D
+                label="Pr"
+                sublabel="Premiere"
+                bgGradient={["#000055", "#0000aa"]}
+                textColor="#9999ff"
+                position={[-3.6, 1.4, 0.5]}
+                rotation={[0.15, 0.25, -0.1]}
+                scale={1.1}
+                floatSpeed={2.2}
+              />
+              <SoftwareBadge3D
+                label="Ai"
+                sublabel="Illustrator"
+                bgGradient={["#331100", "#ff6600"]}
+                textColor="#ffaa00"
+                position={[-3.1, -0.6, 1.2]}
+                rotation={[-0.1, 0.3, 0.15]}
+                scale={1.05}
+                floatSpeed={1.8}
+              />
+              <SoftwareBadge3D
+                label="DaVinci"
+                sublabel="Resolve"
+                bgGradient={["#111122", "#0088cc"]}
+                textColor="#00ccff"
+                position={[-4.1, -2.1, -0.2]}
+                rotation={[0.2, 0.15, -0.05]}
+                scale={0.95}
+                floatSpeed={2.5}
+              />
+
+              {/* Right Side Badges */}
+              <SoftwareBadge3D
+                label="Ps"
+                sublabel="Photoshop"
+                bgGradient={["#001133", "#0066cc"]}
+                textColor="#31a8ff"
+                position={[3.4, 0.9, 0.8]}
+                rotation={[-0.15, -0.25, 0.1]}
+                scale={1.1}
+                floatSpeed={2.0}
+              />
+              <SoftwareBadge3D
+                label="Ae"
+                sublabel="After Effects"
+                bgGradient={["#220033", "#9900cc"]}
+                textColor="#cf96fd"
+                position={[3.9, -1.2, 0.3]}
+                rotation={[0.1, -0.2, -0.12]}
+                scale={1.0}
+                floatSpeed={2.4}
+              />
+              <SoftwareBadge3D
+                label="Blender"
+                sublabel="3D"
+                bgGradient={["#2a1800", "#e87d0d"]}
+                textColor="#ea7600"
+                position={[2.7, -2.3, 1.0]}
+                rotation={[-0.2, -0.1, 0.08]}
+                scale={1.05}
+                floatSpeed={1.9}
+              />
+
               <Environment preset="studio" />
             </Suspense>
           </Canvas>
         </div>
       )}
 
-      {/* Bottom fade */}
-      <div
-        className="absolute bottom-0 left-0 right-0 pointer-events-none"
-        style={{
-          height: "45%",
-          background: "linear-gradient(to top, #000000 0%, transparent 100%)",
-          zIndex: 2,
-        }}
-      />
+      {/* ── Center Visual Layer: TAHA / ELmaanaoui Title & Portrait Cutout ── */}
+      <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center pointer-events-none overflow-hidden">
+        {/* Giant 3D Backdrop Text "TAHA" */}
+        <div className="relative w-full text-center flex flex-col items-center justify-center select-none">
+          <h1
+            className="tracking-tighter font-extrabold uppercase"
+            style={{
+              fontFamily: '"Bebas Neue", sans-serif',
+              fontSize: "clamp(7rem, 23vw, 22rem)",
+              lineHeight: 0.82,
+              background: "linear-gradient(180deg, #FFFFFF 0%, #E0E0E0 45%, #999999 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              filter: "drop-shadow(0 0 45px rgba(226,56,41,0.65)) drop-shadow(0 20px 30px rgba(0,0,0,0.9))",
+              letterSpacing: "0.02em",
+            }}
+          >
+            TAHA
+          </h1>
 
-      {/* Hero text */}
-      <div
-        className="absolute bottom-0 left-0 right-0 px-6 md:px-12 pb-12 md:pb-18"
-        style={{ zIndex: 10 }}
-      >
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
-          {/* Big stacked title */}
-          <div ref={textRef} className="hero-title-container">
-            <div
-              className="hero-text-line"
-              style={{
-                fontFamily: '"Bebas Neue", sans-serif',
-                fontSize: "clamp(4.5rem, 12vw, 11rem)",
-                lineHeight: 0.87,
-                color: "white",
-                clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
-              }}
-            >
-              <div className="overflow-hidden">
-                <div className="line-inner translate-y-full glitch-text" data-text={t.hero.title1}>
-                  {t.hero.title1}
-                </div>
-              </div>
-              <div className="overflow-hidden">
-                <div className="line-inner translate-y-full glitch-text" data-text={t.hero.title2}>
-                  {t.hero.title2}
-                </div>
-              </div>
-              <div className="overflow-hidden">
-                <div className="line-inner translate-y-full glitch-text" data-text={t.hero.title3} style={{ color: "#E23829" }}>
-                  {t.hero.title3}
-                </div>
-              </div>
+          {/* Neon Radiant Red Cursive Script "ELmaanaoui" Overlay */}
+          <div
+            className="absolute z-20 font-bold"
+            style={{
+              top: "46%",
+              left: "50%",
+              transform: "translate(-50%, -50%) rotate(-3deg)",
+              fontFamily: '"Dancing Script", "Brush Script MT", cursive',
+              fontSize: "clamp(3.5rem, 11vw, 10rem)",
+              color: "#FFF0F0",
+              textShadow:
+                "0 0 10px #FF5A4D, 0 0 25px #E23829, 0 0 50px #E23829, 0 0 80px #841512",
+              whiteSpace: "nowrap",
+            }}
+          >
+            ELmaanaoui
+          </div>
+        </div>
+
+        {/* Central Hero Portrait Cutout */}
+        <div
+          className="absolute bottom-0 z-10 w-[340px] sm:w-[450px] md:w-[620px] lg:w-[720px] h-[75vh] transition-transform duration-700 ease-out"
+          style={{
+            maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
+          }}
+        >
+          <Image
+            src="/images/taha-hero.png"
+            alt="Taha Elmaanaoui"
+            fill
+            style={{ objectFit: "contain", objectPosition: "bottom center" }}
+            priority
+          />
+        </div>
+      </div>
+
+      {/* ── Floating Software Badges (HTML Overlay with 3D feel for crisp branding) ── */}
+      <div className="absolute inset-0 z-[3] pointer-events-none flex justify-between items-center px-4 md:px-12">
+        {/* Left Side Floating Badges */}
+        <div className="flex flex-col gap-6 md:gap-10 pointer-events-auto">
+          {/* Premiere Pro */}
+          <div className="group relative flex items-center gap-3 bg-gradient-to-br from-[#0f0a28]/90 to-[#040114]/90 border border-[#9999ff]/40 px-4 py-3 rounded-2xl backdrop-blur-md shadow-[0_0_25px_rgba(153,153,255,0.2)] hover:scale-110 transition-transform duration-300">
+            <div className="w-10 h-10 rounded-xl bg-[#000055] border border-[#9999ff] flex items-center justify-center font-bold text-lg text-[#9999ff]">
+              Pr
+            </div>
+            <div className="hidden sm:block text-left">
+              <div className="text-xs font-mono text-white/90 font-bold">Premiere Pro</div>
+              <div className="text-[0.6rem] font-mono text-white/40">Video Editing</div>
             </div>
           </div>
 
-          {/* Right column */}
-          <div className="flex flex-col gap-3 max-w-xs text-left md:text-right">
-            <div className="section-label">{t.hero.founded}</div>
-            <p style={{
-              fontFamily: "var(--font-space-mono), monospace",
-              fontSize: "0.62rem",
-              letterSpacing: "0.07em",
-              color: "rgba(255,255,255,0.45)",
-              lineHeight: 1.9,
-            }}>
-              {t.hero.description}
-            </p>
-            <div className="flex items-center justify-start md:justify-end gap-3 mt-1">
-              <span style={{
-                fontFamily: "var(--font-space-mono), monospace",
-                fontSize: "0.58rem",
-                letterSpacing: "0.3em",
-                color: "rgba(255,255,255,0.28)",
-              }}>
-                {t.hero.scroll}
-              </span>
-              <div className="scroll-indicator" style={{ color: "rgba(255,255,255,0.28)" }}>↓</div>
+          {/* Illustrator */}
+          <div className="group relative flex items-center gap-3 bg-gradient-to-br from-[#28140a]/90 to-[#140801]/90 border border-[#ffaa00]/40 px-4 py-3 rounded-2xl backdrop-blur-md shadow-[0_0_25px_rgba(255,170,0,0.2)] hover:scale-110 transition-transform duration-300">
+            <div className="w-10 h-10 rounded-xl bg-[#331100] border border-[#ffaa00] flex items-center justify-center font-bold text-lg text-[#ffaa00]">
+              Ai
+            </div>
+            <div className="hidden sm:block text-left">
+              <div className="text-xs font-mono text-white/90 font-bold">Illustrator</div>
+              <div className="text-[0.6rem] font-mono text-white/40">Vector Graphic</div>
+            </div>
+          </div>
+
+          {/* DaVinci Resolve */}
+          <div className="group relative flex items-center gap-3 bg-gradient-to-br from-[#0a1828]/90 to-[#010a14]/90 border border-[#00ccff]/40 px-4 py-3 rounded-2xl backdrop-blur-md shadow-[0_0_25px_rgba(0,204,255,0.2)] hover:scale-110 transition-transform duration-300">
+            <div className="w-10 h-10 rounded-xl bg-[#002244] border border-[#00ccff] flex items-center justify-center font-bold text-sm text-[#00ccff]">
+              DaVinci
+            </div>
+            <div className="hidden sm:block text-left">
+              <div className="text-xs font-mono text-white/90 font-bold">Resolve</div>
+              <div className="text-[0.6rem] font-mono text-white/40">Color Grading</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side Floating Badges */}
+        <div className="flex flex-col gap-6 md:gap-10 pointer-events-auto">
+          {/* Photoshop */}
+          <div className="group relative flex items-center gap-3 bg-gradient-to-br from-[#0a1c33]/90 to-[#010c1a]/90 border border-[#31a8ff]/40 px-4 py-3 rounded-2xl backdrop-blur-md shadow-[0_0_25px_rgba(49,168,255,0.2)] hover:scale-110 transition-transform duration-300">
+            <div className="w-10 h-10 rounded-xl bg-[#001133] border border-[#31a8ff] flex items-center justify-center font-bold text-lg text-[#31a8ff]">
+              Ps
+            </div>
+            <div className="hidden sm:block text-right">
+              <div className="text-xs font-mono text-white/90 font-bold">Photoshop</div>
+              <div className="text-[0.6rem] font-mono text-white/40">Image Design</div>
+            </div>
+          </div>
+
+          {/* After Effects */}
+          <div className="group relative flex items-center gap-3 bg-gradient-to-br from-[#200a33]/90 to-[#0c011a]/90 border border-[#cf96fd]/40 px-4 py-3 rounded-2xl backdrop-blur-md shadow-[0_0_25px_rgba(207,150,253,0.2)] hover:scale-110 transition-transform duration-300">
+            <div className="w-10 h-10 rounded-xl bg-[#220033] border border-[#cf96fd] flex items-center justify-center font-bold text-lg text-[#cf96fd]">
+              Ae
+            </div>
+            <div className="hidden sm:block text-right">
+              <div className="text-xs font-mono text-white/90 font-bold">After Effects</div>
+              <div className="text-[0.6rem] font-mono text-white/40">VFX & Motion</div>
+            </div>
+          </div>
+
+          {/* Blender */}
+          <div className="group relative flex items-center gap-3 bg-gradient-to-br from-[#2b1805]/90 to-[#140901]/90 border border-[#ea7600]/40 px-4 py-3 rounded-2xl backdrop-blur-md shadow-[0_0_25px_rgba(234,118,0,0.2)] hover:scale-110 transition-transform duration-300">
+            <div className="w-10 h-10 rounded-xl bg-[#2a1800] border border-[#ea7600] flex items-center justify-center font-bold text-xs text-[#ea7600]">
+              Blender
+            </div>
+            <div className="hidden sm:block text-right">
+              <div className="text-xs font-mono text-white/90 font-bold">Blender 3D</div>
+              <div className="text-[0.6rem] font-mono text-white/40">3D Animation</div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* ── Bottom Bar: Tagline & Scroll Down ── */}
+      <div className="relative z-20 w-full px-6 md:px-12 pb-8 flex flex-col md:flex-row items-center justify-between gap-4 pointer-events-auto bg-gradient-to-t from-black via-black/80 to-transparent pt-12">
+        {/* Left Founded Label */}
+        <div className="text-xs font-mono text-white/40 tracking-[0.3em] uppercase">
+          EST. 2024 • TAHA ELMAANAOUl
+        </div>
 
+        {/* Center Tagline */}
+        <div
+          className="text-center font-mono font-bold tracking-[0.35em] text-white/90 uppercase text-xs md:text-sm"
+          style={{
+            textShadow: "0 0 15px rgba(226,56,41,0.5)",
+          }}
+        >
+          STRATEGY &nbsp;•&nbsp; EDITING &nbsp;•&nbsp; SUCCESS
+        </div>
+
+        {/* Right Scroll Indicator */}
+        <div
+          className="flex items-center gap-3 cursor-pointer text-white/50 hover:text-white transition-colors"
+          onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+        >
+          <span className="text-[0.6rem] font-mono tracking-[0.3em]">SCROLL</span>
+          <span className="scroll-indicator">↓</span>
+        </div>
+      </div>
     </section>
   );
 }
