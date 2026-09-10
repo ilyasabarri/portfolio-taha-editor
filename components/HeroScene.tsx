@@ -462,20 +462,20 @@ export default function HeroScene() {
         </div>
       )}
 
-      {/* ── Center Visual Layer: TAHA & ELmaanaoui Titles ── */}
-      <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center pointer-events-none overflow-hidden">
-        <div className="relative w-full text-center flex flex-col items-center justify-center select-none -translate-y-8 md:-translate-y-12">
+      {/* ── Background Layer 1: Backdrop Text "TAHA" & "ELmaanaoui" (Shifted High Up Behind Head) ── */}
+      <div className="absolute inset-0 z-[2] flex flex-col items-center justify-start pt-16 md:pt-20 pointer-events-none overflow-hidden select-none">
+        <div className="relative w-full text-center flex flex-col items-center justify-center">
           {/* Giant 3D Backdrop Text "TAHA" */}
           <h1
             className="tracking-tighter font-extrabold uppercase"
             style={{
               fontFamily: '"Bebas Neue", sans-serif',
-              fontSize: "clamp(7rem, 23vw, 22rem)",
-              lineHeight: 0.82,
-              background: "linear-gradient(180deg, #FFFFFF 0%, #E0E0E0 45%, #999999 100%)",
+              fontSize: "clamp(6.5rem, 21vw, 20rem)",
+              lineHeight: 0.8,
+              background: "linear-gradient(180deg, #FFFFFF 0%, #E0E0E0 45%, #888888 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              filter: "drop-shadow(0 0 45px rgba(226,56,41,0.65)) drop-shadow(0 20px 30px rgba(0,0,0,0.9))",
+              filter: "drop-shadow(0 0 45px rgba(226,56,41,0.7)) drop-shadow(0 20px 30px rgba(0,0,0,0.9))",
               letterSpacing: "0.02em",
             }}
           >
@@ -486,11 +486,11 @@ export default function HeroScene() {
           <div
             className="absolute z-20 font-bold"
             style={{
-              top: "46%",
+              top: "42%",
               left: "50%",
               transform: "translate(-50%, -50%) rotate(-3deg)",
               fontFamily: '"Dancing Script", "Brush Script MT", cursive',
-              fontSize: "clamp(3.5rem, 11vw, 10rem)",
+              fontSize: "clamp(3.2rem, 10vw, 9.5rem)",
               color: "#FFF0F0",
               textShadow:
                 "0 0 10px #FF5A4D, 0 0 25px #E23829, 0 0 50px #E23829, 0 0 80px #841512",
@@ -499,6 +499,28 @@ export default function HeroScene() {
           >
             ELmaanaoui
           </div>
+        </div>
+      </div>
+
+      {/* ── Center Layer 2: Ultra-Large 3D Hero Person Cutout (Spans Bottom to Top) ── */}
+      <div className="absolute inset-0 z-[3] flex items-end justify-center pointer-events-none overflow-hidden">
+        <div
+          className="relative w-full max-w-4xl h-[92vh] md:h-[95vh] flex items-end justify-center"
+          style={{
+            filter:
+              "drop-shadow(0 0 40px rgba(226,56,41,0.5)) drop-shadow(0 25px 45px rgba(0,0,0,0.95))",
+          }}
+        >
+          <img
+            src="/taha-hero.png"
+            alt="Taha ELmaanaoui - Video Editor & 3D Artist"
+            className="h-full w-auto object-contain object-bottom scale-105 md:scale-110 transform transition-transform duration-700 ease-out"
+            style={{
+              maxHeight: "95vh",
+              maskImage: "linear-gradient(to top, black 85%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to top, black 88%, transparent 100%)",
+            }}
+          />
         </div>
       </div>
 
