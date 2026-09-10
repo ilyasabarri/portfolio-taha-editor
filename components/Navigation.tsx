@@ -31,10 +31,10 @@ export default function Navigation() {
       <div />
 
       {/* Right nav */}
-      <div className="flex items-center gap-2 md:gap-3">
+      <div className="flex items-center gap-3 md:gap-3">
         <button
           onClick={() => scrollTo("work")}
-          className="pill-btn text-white/70 hover:text-white"
+          className="pill-btn text-white/70 hover:text-white px-5 py-2.5 text-sm md:px-4 md:py-1.5 md:text-xs"
           data-cursor
         >
           {t.nav.work}
@@ -46,7 +46,7 @@ export default function Navigation() {
 
         <button
           onClick={() => scrollTo("contact")}
-          className="pill-btn text-white/70 hover:text-white"
+          className="pill-btn text-white/70 hover:text-white px-5 py-2.5 text-sm md:px-4 md:py-1.5 md:text-xs"
           data-cursor
         >
           {t.nav.contact}
@@ -72,19 +72,19 @@ export default function Navigation() {
       </div>
     </nav>
 
-    {/* EN / FR toggle (Mobile Fixed) */}
+    {/* EN / FR toggle (Mobile Fixed - Doubled Size on Phone) */}
     <button
       onClick={toggleLocale}
-      className="md:hidden fixed bottom-6 right-6 z-[90] flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-mono transition-all duration-300 backdrop-blur-md"
+      className="md:hidden fixed bottom-6 right-6 z-[90] flex items-center gap-2 px-6 py-3 rounded-full text-sm font-mono font-bold transition-all duration-300 backdrop-blur-md shadow-2xl"
       style={{
-        border: "1px solid rgba(255,90,77,0.4)",
+        border: "1.5px solid rgba(255,90,77,0.6)",
         color: "#FF5A4D",
         letterSpacing: "0.15em",
-        background: "rgba(226,56,41,0.08)",
+        background: "rgba(226,56,41,0.18)",
       }}
     >
       <span className={locale === "en" ? "opacity-100" : "opacity-35"}>EN</span>
-      <span className="opacity-30">/</span>
+      <span className="opacity-40">/</span>
       <span className={locale === "fr" ? "opacity-100" : "opacity-35"}>FR</span>
     </button>
     </>

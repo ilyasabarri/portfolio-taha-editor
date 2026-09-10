@@ -201,6 +201,7 @@ interface SoftwareCubeProps {
   floatSpeed?: number;
   floatRotation?: number;
   floatIntensity?: number;
+  disableReflection?: boolean;
 }
 
 function SoftwareCube3D({
@@ -211,6 +212,7 @@ function SoftwareCube3D({
   floatSpeed = 2,
   floatRotation = 0.3,
   floatIntensity = 0.3,
+  disableReflection = false,
 }: SoftwareCubeProps) {
   const meshRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
@@ -275,16 +277,16 @@ function SoftwareCube3D({
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
       >
-        {/* 3D Tile Extruded Base Mesh (Sleek Glossy Finish from Screenshot) */}
+        {/* 3D Tile Extruded Base Mesh */}
         <mesh castShadow receiveShadow>
           <extrudeGeometry args={[tileShape, extrudeTile]} />
           <meshPhysicalMaterial
             color={theme.tileColor}
-            metalness={0.7}
-            roughness={0.08}
-            clearcoat={1.0}
-            clearcoatRoughness={0.03}
-            reflectivity={1.0}
+            metalness={disableReflection ? 0.0 : 0.7}
+            roughness={disableReflection ? 0.6 : 0.08}
+            clearcoat={disableReflection ? 0.0 : 1.0}
+            clearcoatRoughness={disableReflection ? 1.0 : 0.03}
+            reflectivity={disableReflection ? 0.0 : 1.0}
             emissive={theme.tileEmissive}
             emissiveIntensity={hovered ? 0.55 : 0.28}
           />
@@ -367,70 +369,68 @@ function ResponsiveScene() {
   const isMobile = size.width < 768;
 
   useEffect(() => {
-    if (isMobile) {
-      camera.position.z = 11.2; // Pull back camera on mobile phone screens so all 3D cubes fit inside the frame!
-    } else {
-      camera.position.z = 7.5;
-    }
+    camera.position.z = 7.5;
     camera.updateProjectionMatrix();
   }, [camera, size.width, isMobile]);
-
-  // Adjust horizontal spread and scaling dynamically for mobile vs desktop
-  const xMult = isMobile ? 0.44 : 1.0;
-  const scaleMult = isMobile ? 0.68 : 1.0;
 
   return (
     <>
       {/* Left Side 3D Cubes */}
       <SoftwareCube3D
         type="Pr"
-        position={[-4.4 * xMult, isMobile ? 2.4 : 2.1, 0.4]}
+        position={[isMobile ? -1.25 : -4.4, isMobile ? 1.3 : 2.1, 0.4]}
         rotation={[0.15, 0.25, -0.1]}
-        scale={0.75 * scaleMult}
+        scale={isMobile ? 0.38 : 0.75}
         floatSpeed={1.8}
-        floatIntensity={0.22}
+        floatIntensity={isMobile ? 0.15 : 0.25}
+        disableReflection={isMobile}
       />
       <SoftwareCube3D
         type="Ai"
-        position={[-3.7 * xMult, isMobile ? 0.4 : 0.1, 1.0]}
+        position={[isMobile ? -1.05 : -3.7, isMobile ? 0.2 : 0.1, 1.0]}
         rotation={[-0.1, 0.3, 0.15]}
-        scale={0.72 * scaleMult}
+        scale={isMobile ? 0.36 : 0.72}
         floatSpeed={1.5}
-        floatIntensity={0.20}
+        floatIntensity={isMobile ? 0.12 : 0.22}
+        disableReflection={isMobile}
       />
       <SoftwareCube3D
         type="DaVinci"
-        position={[-4.5 * xMult, isMobile ? -1.6 : -1.9, 0.2]}
+        position={[isMobile ? -1.28 : -4.5, isMobile ? -0.9 : -1.9, 0.2]}
         rotation={[0.2, 0.15, -0.05]}
-        scale={0.70 * scaleMult}
+        scale={isMobile ? 0.35 : 0.70}
         floatSpeed={2.0}
-        floatIntensity={0.22}
+        floatIntensity={isMobile ? 0.15 : 0.25}
+        disableReflection={isMobile}
       />
 
       {/* Right Side 3D Cubes */}
       <SoftwareCube3D
         type="Ps"
-        position={[4.4 * xMult, isMobile ? 2.3 : 2.0, 0.6]}
+        position={[isMobile ? 1.25 : 4.4, isMobile ? 1.2 : 2.0, 0.6]}
         rotation={[-0.15, -0.25, 0.1]}
-        scale={0.75 * scaleMult}
+        scale={isMobile ? 0.38 : 0.75}
         floatSpeed={1.7}
-        floatIntensity={0.22}
+        floatIntensity={isMobile ? 0.15 : 0.25}
+        disableReflection={isMobile}
       />
       <SoftwareCube3D
         type="Ae"
-        position={[3.7 * xMult, isMobile ? 0.3 : 0.0, 0.8]}
+        position={[isMobile ? 1.05 : 3.7, isMobile ? 0.1 : 0.0, 0.8]}
         rotation={[0.1, -0.2, -0.12]}
-        scale={0.72 * scaleMult}
+        scale={isMobile ? 0.36 : 0.72}
         floatSpeed={1.9}
-        floatIntensity={0.20}
+        floatIntensity={isMobile ? 0.12 : 0.22}
+        disableReflection={isMobile}
       />
       <SoftwareCube3D
         type="Blender"
-        position={[4.5 * xMult, isMobile ? -1.7 : -2.0, 0.4]}
+        position={[isMobile ? 1.28 : 4.5, isMobile ? -1.0 : -2.0, 0.4]}
         rotation={[-0.2, -0.1, 0.08]}
-        scale={0.70 * scaleMult}
+        scale={isMobile ? 0.35 : 0.70}
         floatSpeed={1.6}
-        floatIntensity={0.22}
+        floatIntensity={isMobile ? 0.15 : 0.25}
+        disableReflection={isMobile}
       />
     </>
   );
@@ -485,14 +485,14 @@ export default function HeroScene() {
       )}
 
       {/* ── Background Layer 1: Backdrop Text "TAHA" & "ELmaanaoui" (Behind Head on Mobile & Laptop) ── */}
-      <div className="absolute inset-0 z-[2] flex flex-col items-center justify-start pt-12 sm:pt-24 md:pt-20 pointer-events-none overflow-hidden select-none">
+      <div className="absolute inset-0 z-[2] flex flex-col items-center justify-start pt-36 sm:pt-36 md:pt-20 pointer-events-none overflow-hidden select-none">
         <div className="relative w-full text-center flex flex-col items-center justify-center">
           {/* Custom TAHA Graphic Logo Backdrop */}
           <div className="relative w-[92vw] max-w-6xl flex justify-center px-2">
             <img
               src="/taha-title-logo.png"
               alt="TAHA"
-              className="w-full h-auto object-contain max-h-[25vh] sm:max-h-[48vh] md:max-h-[58vh] scale-100 sm:scale-115 md:scale-120 transform origin-top transition-transform duration-500"
+              className="w-full h-auto object-contain max-h-[28vh] sm:max-h-[48vh] md:max-h-[58vh] scale-100 sm:scale-115 md:scale-120 transform origin-top transition-transform duration-500"
               style={{
                 filter:
                   "drop-shadow(0 0 50px rgba(226,56,41,0.85)) drop-shadow(0 25px 40px rgba(0,0,0,0.95))",
@@ -523,7 +523,7 @@ export default function HeroScene() {
       {/* ── Center Layer 2: 3D Hero Person Cutout (Mobile & Desktop Responsive Images) ── */}
       <div className="absolute inset-0 z-[3] flex items-end justify-center pointer-events-none overflow-hidden">
         <div
-          className="relative w-full max-w-4xl h-[75vh] sm:h-[88vh] md:h-[95vh] flex items-end justify-center"
+          className="relative w-full max-w-4xl h-[88vh] sm:h-[90vh] md:h-[95vh] flex items-end justify-center"
           style={{
             filter:
               "drop-shadow(0 0 40px rgba(226,56,41,0.5)) drop-shadow(0 25px 45px rgba(0,0,0,0.95))",
@@ -545,9 +545,9 @@ export default function HeroScene() {
           <img
             src="/taha-hero-mobile.png"
             alt="Taha ELmaanaoui - Video Editor & 3D Artist"
-            className="block md:hidden h-full w-auto object-contain object-bottom scale-95 transform transition-transform duration-700 ease-out translate-y-2"
+            className="block md:hidden h-full w-auto object-contain object-bottom scale-105 transform transition-transform duration-700 ease-out"
             style={{
-              maxHeight: "74vh",
+              maxHeight: "88vh",
               maskImage: "linear-gradient(to top, black 85%, transparent 100%)",
               WebkitMaskImage: "linear-gradient(to top, black 88%, transparent 100%)",
             }}
@@ -555,14 +555,16 @@ export default function HeroScene() {
         </div>
       </div>
 
-      {/* ── Scroll Down Indicator at Bottom ── */}
-      <div className="relative z-20 w-full px-6 md:px-12 pb-8 flex items-center justify-end pointer-events-auto">
+      {/* ── Scroll Down Animated Indicator (Bottom-Left on Phone, Bottom-Right on Laptop) ── */}
+      <div className="absolute bottom-8 left-6 z-30 md:bottom-8 md:right-10 md:left-auto md:z-30 md:flex md:items-center md:justify-end pointer-events-auto">
         <div
-          className="flex items-center gap-3 cursor-pointer text-white/50 hover:text-white transition-colors"
+          className="flex items-center gap-3 cursor-pointer text-white/70 hover:text-white transition-colors"
           onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
         >
-          <span className="text-[0.6rem] font-mono tracking-[0.3em]">SCROLL</span>
-          <span className="scroll-indicator">↓</span>
+          <span className="text-xs sm:text-[0.7rem] md:text-[0.6rem] font-mono tracking-[0.3em] font-bold md:font-normal">
+            SCROLL
+          </span>
+          <span className="scroll-indicator text-lg md:text-sm">↓</span>
         </div>
       </div>
     </section>
