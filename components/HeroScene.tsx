@@ -150,6 +150,7 @@ interface SoftwareCubeProps {
   scale?: number;
   floatSpeed?: number;
   floatRotation?: number;
+  floatIntensity?: number;
 }
 
 function SoftwareCube3D({
@@ -159,6 +160,7 @@ function SoftwareCube3D({
   scale = 1,
   floatSpeed = 2,
   floatRotation = 0.3,
+  floatIntensity = 0.3,
 }: SoftwareCubeProps) {
   const meshRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
@@ -214,7 +216,7 @@ function SoftwareCube3D({
     <Float
       speed={floatSpeed}
       rotationIntensity={floatRotation}
-      floatIntensity={0.85}
+      floatIntensity={floatIntensity}
     >
       <group
         ref={meshRef}
@@ -351,51 +353,57 @@ export default function HeroScene() {
             <Suspense fallback={null}>
               <ParticleAtmosphere count={2500} />
 
-              {/* 3D Software Tool Cubes Spaced & Balanced with Breathing Room */}
+              {/* 3D Software Tool Cubes Spaced & Balanced with Wide Breathing Room */}
               {/* Left Side 3D Cubes */}
               <SoftwareCube3D
                 type="Pr"
-                position={[-4.5, 1.85, 0.4]}
+                position={[-4.4, 2.1, 0.4]}
                 rotation={[0.15, 0.25, -0.1]}
-                scale={1.05}
-                floatSpeed={2.2}
+                scale={0.75}
+                floatSpeed={1.8}
+                floatIntensity={0.25}
               />
               <SoftwareCube3D
                 type="Ai"
-                position={[-3.9, 0.25, 1.0]}
+                position={[-3.7, 0.1, 1.0]}
                 rotation={[-0.1, 0.3, 0.15]}
-                scale={1.0}
-                floatSpeed={1.8}
+                scale={0.72}
+                floatSpeed={1.5}
+                floatIntensity={0.22}
               />
               <SoftwareCube3D
                 type="DaVinci"
-                position={[-4.6, -1.25, 0.2]}
+                position={[-4.5, -1.9, 0.2]}
                 rotation={[0.2, 0.15, -0.05]}
-                scale={0.95}
-                floatSpeed={2.5}
+                scale={0.70}
+                floatSpeed={2.0}
+                floatIntensity={0.25}
               />
 
               {/* Right Side 3D Cubes */}
               <SoftwareCube3D
                 type="Ps"
-                position={[4.5, 1.75, 0.6]}
+                position={[4.4, 2.0, 0.6]}
                 rotation={[-0.15, -0.25, 0.1]}
-                scale={1.05}
-                floatSpeed={2.0}
+                scale={0.75}
+                floatSpeed={1.7}
+                floatIntensity={0.25}
               />
               <SoftwareCube3D
                 type="Ae"
-                position={[3.9, 0.15, 0.8]}
+                position={[3.7, 0.0, 0.8]}
                 rotation={[0.1, -0.2, -0.12]}
-                scale={1.0}
-                floatSpeed={2.4}
+                scale={0.72}
+                floatSpeed={1.9}
+                floatIntensity={0.22}
               />
               <SoftwareCube3D
                 type="Blender"
-                position={[4.6, -1.35, 0.4]}
+                position={[4.5, -2.0, 0.4]}
                 rotation={[-0.2, -0.1, 0.08]}
-                scale={1.0}
-                floatSpeed={1.9}
+                scale={0.70}
+                floatSpeed={1.6}
+                floatIntensity={0.25}
               />
 
               <Environment preset="studio" />
