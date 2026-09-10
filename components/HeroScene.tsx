@@ -378,58 +378,58 @@ function ResponsiveScene() {
       {/* Left Side 3D Cubes */}
       <SoftwareCube3D
         type="Pr"
-        position={[isMobile ? -1.25 : -4.4, isMobile ? 1.3 : 2.1, 0.4]}
+        position={[isMobile ? -1.22 : -4.4, isMobile ? 1.25 : 2.1, 0.4]}
         rotation={[0.15, 0.25, -0.1]}
-        scale={isMobile ? 0.38 : 0.75}
+        scale={isMobile ? 0.35 : 0.75}
         floatSpeed={1.8}
-        floatIntensity={isMobile ? 0.15 : 0.25}
+        floatIntensity={isMobile ? 0.12 : 0.25}
         disableReflection={isMobile}
       />
       <SoftwareCube3D
         type="Ai"
-        position={[isMobile ? -1.05 : -3.7, isMobile ? 0.2 : 0.1, 1.0]}
+        position={[isMobile ? -1.02 : -3.7, isMobile ? 0.15 : 0.1, 1.0]}
         rotation={[-0.1, 0.3, 0.15]}
-        scale={isMobile ? 0.36 : 0.72}
+        scale={isMobile ? 0.33 : 0.72}
         floatSpeed={1.5}
-        floatIntensity={isMobile ? 0.12 : 0.22}
+        floatIntensity={isMobile ? 0.10 : 0.22}
         disableReflection={isMobile}
       />
       <SoftwareCube3D
         type="DaVinci"
-        position={[isMobile ? -1.28 : -4.5, isMobile ? -0.9 : -1.9, 0.2]}
+        position={[isMobile ? -1.25 : -4.5, isMobile ? -0.85 : -1.9, 0.2]}
         rotation={[0.2, 0.15, -0.05]}
-        scale={isMobile ? 0.35 : 0.70}
+        scale={isMobile ? 0.32 : 0.70}
         floatSpeed={2.0}
-        floatIntensity={isMobile ? 0.15 : 0.25}
+        floatIntensity={isMobile ? 0.12 : 0.25}
         disableReflection={isMobile}
       />
 
       {/* Right Side 3D Cubes */}
       <SoftwareCube3D
         type="Ps"
-        position={[isMobile ? 1.25 : 4.4, isMobile ? 1.2 : 2.0, 0.6]}
+        position={[isMobile ? 1.22 : 4.4, isMobile ? 1.15 : 2.0, 0.6]}
         rotation={[-0.15, -0.25, 0.1]}
-        scale={isMobile ? 0.38 : 0.75}
+        scale={isMobile ? 0.35 : 0.75}
         floatSpeed={1.7}
-        floatIntensity={isMobile ? 0.15 : 0.25}
+        floatIntensity={isMobile ? 0.12 : 0.25}
         disableReflection={isMobile}
       />
       <SoftwareCube3D
         type="Ae"
-        position={[isMobile ? 1.05 : 3.7, isMobile ? 0.1 : 0.0, 0.8]}
+        position={[isMobile ? 1.02 : 3.7, isMobile ? 0.05 : 0.0, 0.8]}
         rotation={[0.1, -0.2, -0.12]}
-        scale={isMobile ? 0.36 : 0.72}
+        scale={isMobile ? 0.33 : 0.72}
         floatSpeed={1.9}
-        floatIntensity={isMobile ? 0.12 : 0.22}
+        floatIntensity={isMobile ? 0.10 : 0.22}
         disableReflection={isMobile}
       />
       <SoftwareCube3D
         type="Blender"
-        position={[isMobile ? 1.28 : 4.5, isMobile ? -1.0 : -2.0, 0.4]}
+        position={[isMobile ? 1.25 : 4.5, isMobile ? -0.95 : -2.0, 0.4]}
         rotation={[-0.2, -0.1, 0.08]}
-        scale={isMobile ? 0.35 : 0.70}
+        scale={isMobile ? 0.32 : 0.70}
         floatSpeed={1.6}
-        floatIntensity={isMobile ? 0.15 : 0.25}
+        floatIntensity={isMobile ? 0.12 : 0.25}
         disableReflection={isMobile}
       />
     </>
@@ -451,7 +451,7 @@ export default function HeroScene() {
   return (
     <section
       id="hero"
-      className="relative w-full overflow-hidden flex flex-col justify-between h-[1000px] max-h-[1000px] md:h-[100svh] md:max-h-none"
+      className="relative w-full overflow-hidden flex flex-col justify-between h-[100dvh] md:h-[100svh]"
       style={{ background: "#040101" }}
     >
       {/* ── 3D Canvas Background & Floating Software Badges ── */}
@@ -485,14 +485,14 @@ export default function HeroScene() {
       )}
 
       {/* ── Background Layer 1: Backdrop Text "TAHA" & "ELmaanaoui" (Behind Head on Mobile & Laptop) ── */}
-      <div className="absolute inset-0 z-[2] flex flex-col items-center justify-start pt-36 sm:pt-36 md:pt-20 pointer-events-none overflow-hidden select-none">
+      <div className="absolute inset-0 z-[2] flex flex-col items-center justify-start pt-24 sm:pt-24 md:pt-20 pointer-events-none overflow-hidden select-none">
         <div className="relative w-full text-center flex flex-col items-center justify-center">
           {/* Custom TAHA Graphic Logo Backdrop */}
           <div className="relative w-[92vw] max-w-6xl flex justify-center px-2">
             <img
               src="/taha-title-logo.png"
               alt="TAHA"
-              className="w-full h-auto object-contain max-h-[28vh] sm:max-h-[48vh] md:max-h-[58vh] scale-100 sm:scale-115 md:scale-120 transform origin-top transition-transform duration-500"
+              className="w-full h-auto object-contain max-h-[25vh] sm:max-h-[48vh] md:max-h-[58vh] scale-100 sm:scale-115 md:scale-120 transform origin-top transition-transform duration-500"
               style={{
                 filter:
                   "drop-shadow(0 0 50px rgba(226,56,41,0.85)) drop-shadow(0 25px 40px rgba(0,0,0,0.95))",
@@ -508,7 +508,7 @@ export default function HeroScene() {
               left: "50%",
               transform: "translate(-50%, -50%) rotate(-3deg)",
               fontFamily: '"Dancing Script", "Brush Script MT", cursive',
-              fontSize: "clamp(2.5rem, 11vw, 11rem)",
+              fontSize: "clamp(2.4rem, 10vw, 11rem)",
               color: "#FFF0F0",
               textShadow:
                 "0 0 10px #FF5A4D, 0 0 25px #E23829, 0 0 50px #E23829, 0 0 80px #841512",
@@ -523,7 +523,7 @@ export default function HeroScene() {
       {/* ── Center Layer 2: 3D Hero Person Cutout (Mobile & Desktop Responsive Images) ── */}
       <div className="absolute inset-0 z-[3] flex items-end justify-center pointer-events-none overflow-hidden">
         <div
-          className="relative w-full max-w-4xl h-[88vh] sm:h-[90vh] md:h-[95vh] flex items-end justify-center"
+          className="relative w-full max-w-4xl h-[68vh] sm:h-[88vh] md:h-[95vh] flex items-end justify-center"
           style={{
             filter:
               "drop-shadow(0 0 40px rgba(226,56,41,0.5)) drop-shadow(0 25px 45px rgba(0,0,0,0.95))",
@@ -545,9 +545,9 @@ export default function HeroScene() {
           <img
             src="/taha-hero-mobile.png"
             alt="Taha ELmaanaoui - Video Editor & 3D Artist"
-            className="block md:hidden h-full w-auto object-contain object-bottom scale-105 transform transition-transform duration-700 ease-out"
+            className="block md:hidden h-full w-auto object-contain object-bottom scale-100 transform transition-transform duration-700 ease-out"
             style={{
-              maxHeight: "88vh",
+              maxHeight: "68vh",
               maskImage: "linear-gradient(to top, black 85%, transparent 100%)",
               WebkitMaskImage: "linear-gradient(to top, black 88%, transparent 100%)",
             }}
