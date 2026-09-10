@@ -91,50 +91,100 @@ function createSoftwareLogoTexture(type: SoftwareType, config: SoftwareConfig): 
     ctx.shadowBlur = 15;
     ctx.fillText(type, 256, 256);
   } else if (type === "DaVinci") {
-    // 3 Color Wheel Rings of DaVinci Resolve
-    const centers = [
-      { x: 256, y: 195, color: "#ff3344" },
-      { x: 195, y: 300, color: "#33cc55" },
-      { x: 317, y: 300, color: "#3388ff" },
+    // Official DaVinci Resolve 3-Petal Color Swirl (Red/Green/Blue Gradients)
+    ctx.save();
+    ctx.translate(256, 260);
+
+    const daVinciColors = [
+      { start: "#FF3B30", end: "#FF9500" }, // Red-Orange (Top)
+      { start: "#34C759", end: "#00C7BE" }, // Green-Teal (Right)
+      { start: "#007AFF", end: "#5856D6" }, // Blue-Purple (Left)
     ];
-    centers.forEach((c) => {
+
+    const angles = [-Math.PI / 2, (1 * Math.PI) / 6, (5 * Math.PI) / 6];
+
+    angles.forEach((angle, idx) => {
+      ctx.save();
+      ctx.rotate(angle);
+
+      const grad = ctx.createLinearGradient(0, -115, 0, -15);
+      grad.addColorStop(0, daVinciColors[idx].start);
+      grad.addColorStop(1, daVinciColors[idx].end);
+
       ctx.beginPath();
-      ctx.arc(c.x, c.y, 65, 0, Math.PI * 2);
-      ctx.fillStyle = c.color;
-      ctx.globalAlpha = 0.9;
+      ctx.moveTo(0, -115);
+      ctx.bezierCurveTo(55, -115, 65, -35, 0, -15);
+      ctx.bezierCurveTo(-65, -35, -55, -115, 0, -115);
+      ctx.closePath();
+
+      ctx.fillStyle = grad;
+      ctx.shadowColor = daVinciColors[idx].start;
+      ctx.shadowBlur = 18;
+      ctx.fill();
+
+      ctx.restore();
+    });
+
+    // Inner dark center swirl accent
+    ctx.beginPath();
+    ctx.arc(0, 0, 22, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(4, 8, 24, 0.7)";
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = "#000000";
+    ctx.fill();
+
+    ctx.restore();
+  } else if (type === "Blender") {
+    // Official Blender Icon (Orange Body + 3 Spoke Arms + White & Blue Center Eye)
+    const cx = 256;
+    const cy = 280;
+
+    ctx.save();
+
+    // 1. Outer Orange Hub
+    ctx.fillStyle = "#EA7600";
+    ctx.shadowColor = "#EA7600";
+    ctx.shadowBlur = 18;
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, 75, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 2. 3 Spoke Arms (Top-Left, Top, Top-Right)
+    const armAngles = [-Math.PI * 0.75, -Math.PI * 0.5, -Math.PI * 0.25];
+    const armLength = 125;
+    const armRadius = 20;
+
+    armAngles.forEach((angle) => {
+      const tipX = cx + Math.cos(angle) * armLength;
+      const tipY = cy + Math.sin(angle) * armLength;
+
+      const perpX = Math.cos(angle + Math.PI / 2) * armRadius;
+      const perpY = Math.sin(angle + Math.PI / 2) * armRadius;
+
+      ctx.beginPath();
+      ctx.moveTo(cx + perpX, cy + perpY);
+      ctx.lineTo(tipX + perpX, tipY + perpY);
+      ctx.arc(tipX, tipY, armRadius, angle + Math.PI / 2, angle - Math.PI / 2, false);
+      ctx.lineTo(cx - perpX, cy - perpY);
+      ctx.closePath();
       ctx.fill();
     });
-    ctx.globalAlpha = 1.0;
-  } else if (type === "Blender") {
-    // Iconic Blender Orange Circle & Blue Eye
+
+    // 3. Inner White Ring
+    ctx.shadowBlur = 0;
     ctx.beginPath();
-    ctx.arc(256, 285, 88, 0, Math.PI * 2);
-    ctx.fillStyle = "#ea7600";
+    ctx.arc(cx, cy, 48, 0, Math.PI * 2);
+    ctx.fillStyle = "#FFFFFF";
     ctx.fill();
 
+    // 4. Inner Blue Eye
     ctx.beginPath();
-    ctx.arc(256, 285, 42, 0, Math.PI * 2);
-    ctx.fillStyle = "#0066cc";
+    ctx.arc(cx, cy, 32, 0, Math.PI * 2);
+    ctx.fillStyle = "#225B99";
     ctx.fill();
 
-    // Spokes
-    ctx.lineWidth = 28;
-    ctx.strokeStyle = "#ea7600";
-
-    ctx.beginPath();
-    ctx.moveTo(256, 197);
-    ctx.lineTo(256, 120);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(318, 223);
-    ctx.lineTo(385, 155);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(194, 223);
-    ctx.lineTo(127, 155);
-    ctx.stroke();
+    ctx.restore();
   }
 
   const texture = new THREE.CanvasTexture(canvas);
