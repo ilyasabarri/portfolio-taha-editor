@@ -82,31 +82,31 @@ function NorthArrow3D() {
         <mesh castShadow position={[-0.24, 0, 0]}>
           <extrudeGeometry args={[tailShape, { ...extrudeSettings, depth: 0.48 }]} />
           <meshPhysicalMaterial
-            color="#0019FF"
-            metalness={0.7}
+            color="#E23829"
+            metalness={0.75}
             roughness={0.15}
-            emissive="#0010cc"
-            emissiveIntensity={0.6}
-            envMapIntensity={2}
+            emissive="#7F1D1D"
+            emissiveIntensity={0.8}
+            envMapIntensity={2.5}
           />
         </mesh>
 
-        {/* Blue orbit ring */}
+        {/* Red orbit ring */}
         <mesh rotation={[0, 0, 0]} position={[0, 0, -0.26]}>
           <torusGeometry args={[2.1, 0.012, 16, 160]} />
-          <meshBasicMaterial color="#0019FF" transparent opacity={0.55} />
+          <meshBasicMaterial color="#E23829" transparent opacity={0.6} />
         </mesh>
 
-        {/* Lime dashed orbit (simulated with scale) */}
+        {/* Radiant coral dashed orbit */}
         <mesh rotation={[Math.PI * 0.08, 0, Math.PI * 0.08]} position={[0, 0, -0.36]}>
           <torusGeometry args={[2.55, 0.006, 8, 96]} />
-          <meshBasicMaterial color="#C8FF00" transparent opacity={0.3} />
+          <meshBasicMaterial color="#FF5A4D" transparent opacity={0.4} />
         </mesh>
 
         {/* Inner glow sphere */}
         <mesh>
           <sphereGeometry args={[0.45, 32, 32]} />
-          <meshBasicMaterial color="#3355ff" transparent opacity={0.08} />
+          <meshBasicMaterial color="#FF3322" transparent opacity={0.12} />
         </mesh>
       </group>
     </group>
@@ -134,9 +134,9 @@ function ParticleField({ count = 3000 }: { count?: number }) {
       vel[i3 + 1] = (Math.random() - 0.5) * 0.004;
       vel[i3 + 2] = (Math.random() - 0.5) * 0.003;
       const rnd = Math.random();
-      if (rnd < 0.55) { col[i3] = 0.85; col[i3 + 1] = 0.9; col[i3 + 2] = 1.0; }
-      else if (rnd < 0.82) { col[i3] = 0.0; col[i3 + 1] = 0.12; col[i3 + 2] = 1.0; }
-      else { col[i3] = 0.78; col[i3 + 1] = 1.0; col[i3 + 2] = 0.0; }
+      if (rnd < 0.55) { col[i3] = 1.0; col[i3 + 1] = 0.9; col[i3 + 2] = 0.9; } // soft white-pink
+      else if (rnd < 0.82) { col[i3] = 0.88; col[i3 + 1] = 0.22; col[i3 + 2] = 0.16; } // radiant red
+      else { col[i3] = 1.0; col[i3 + 1] = 0.35; col[i3 + 2] = 0.3; } // coral light
     }
     return [pos, vel, col];
   })();
@@ -178,12 +178,12 @@ function AmbientGlow() {
   useFrame(({ clock }) => {
     if (!ref.current) return;
     (ref.current.material as THREE.MeshBasicMaterial).opacity =
-      0.06 + Math.sin(clock.elapsedTime * 0.9) * 0.025;
+      0.08 + Math.sin(clock.elapsedTime * 0.9) * 0.03;
   });
   return (
     <mesh ref={ref}>
       <sphereGeometry args={[4, 32, 32]} />
-      <meshBasicMaterial color="#0019FF" transparent opacity={0.06} side={THREE.BackSide} />
+      <meshBasicMaterial color="#E23829" transparent opacity={0.08} side={THREE.BackSide} />
     </mesh>
   );
 }
@@ -228,11 +228,11 @@ export default function HeroScene() {
             gl={{ antialias: true, alpha: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.6 }}
           >
             {/* Lights */}
-            <ambientLight intensity={0.5} color="#b0c0ff" />
+            <ambientLight intensity={0.5} color="#ffb0b0" />
             <directionalLight position={[4, 8, 6]} intensity={3.5} color="#ffffff" castShadow />
-            <directionalLight position={[-4, 3, -2]} intensity={1.2} color="#8090ff" />
-            <pointLight position={[-5, 4, 3]} intensity={4} color="#0019FF" distance={18} />
-            <pointLight position={[5, -3, 2]} intensity={2.5} color="#4466ff" distance={14} />
+            <directionalLight position={[-4, 3, -2]} intensity={1.2} color="#ff8080" />
+            <pointLight position={[-5, 4, 3]} intensity={4} color="#E23829" distance={18} />
+            <pointLight position={[5, -3, 2]} intensity={2.5} color="#FF5A4D" distance={14} />
             <pointLight position={[0, 6, 1]} intensity={2} color="#ffffff" distance={12} />
             <rectAreaLight
               position={[3, 2, 5]}
@@ -294,7 +294,7 @@ export default function HeroScene() {
                 </div>
               </div>
               <div className="overflow-hidden">
-                <div className="line-inner translate-y-full glitch-text" data-text={t.hero.title3} style={{ color: "#0019FF" }}>
+                <div className="line-inner translate-y-full glitch-text" data-text={t.hero.title3} style={{ color: "#E23829" }}>
                   {t.hero.title3}
                 </div>
               </div>

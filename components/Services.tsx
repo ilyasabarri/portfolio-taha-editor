@@ -55,7 +55,7 @@ export default function Services() {
       className="relative py-24 md:py-40 px-6 md:px-12 overflow-hidden"
       style={{
         background:
-          "linear-gradient(180deg, #00073a 0%, #000d80 50%, #0019FF 100%)",
+          "linear-gradient(180deg, #3d0706 0%, #751210 50%, #E23829 100%)",
       }}
     >
       <div className="max-w-7xl mx-auto">

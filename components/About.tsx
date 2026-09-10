@@ -74,7 +74,7 @@ export default function About() {
       className="relative py-24 md:py-40 px-6 md:px-12 overflow-hidden"
       style={{
         background:
-          "linear-gradient(180deg, #000000 0%, #00041a 50%, #00073a 100%)",
+          "linear-gradient(180deg, #000000 0%, #1c0303 50%, #3d0706 100%)",
       }}
     >
       {/* Background grid lines */}
@@ -82,7 +82,7 @@ export default function About() {
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(0,25,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,25,255,0.04) 1px, transparent 1px)",
+            "linear-gradient(rgba(226,56,41,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(226,56,41,0.05) 1px, transparent 1px)",
           backgroundSize: "80px 80px",
         }}
       />
@@ -106,10 +106,10 @@ export default function About() {
               <span className="block">{t.about.title1}</span>
             </div>
             <div className="reveal-title overflow-hidden">
-              <span className="block text-gradient-blue">{t.about.title2}</span>
+              <span className="block text-gradient-red">{t.about.title2}</span>
             </div>
             <div className="reveal-title overflow-hidden">
-              <span className="block" style={{ color: "#0019FF" }}>
+              <span className="block" style={{ color: "#E23829" }}>
                 {t.about.title3}
               </span>
             </div>
@@ -123,7 +123,7 @@ export default function About() {
                   style={{
                     fontFamily: '"Bebas Neue", sans-serif',
                     fontSize: "clamp(2.5rem, 5vw, 3.5rem)",
-                    color: "#C8FF00",
+                    color: "#FF5A4D",
                     lineHeight: 1,
                   }}
                 >
@@ -149,7 +149,7 @@ export default function About() {
         <div className="flex flex-col gap-6 md:pt-8">
           {/* Decorative line */}
           <div className="reveal-para flex items-center gap-4">
-            <div style={{ width: "40px", height: "1px", background: "#0019FF" }} />
+            <div style={{ width: "40px", height: "1px", background: "#E23829" }} />
             <span
               style={{
                 fontFamily: "var(--font-space-mono), monospace",
@@ -199,14 +199,14 @@ export default function About() {
                 fontFamily: "var(--font-space-mono), monospace",
                 fontSize: "0.7rem",
                 letterSpacing: "0.25em",
-                color: "#C8FF00",
+                color: "#FF5A4D",
               }}
             >
               DISCOVER OUR WORK
             </span>
             <span
               className="transition-transform duration-300 group-hover:translate-x-2"
-              style={{ color: "#C8FF00" }}
+              style={{ color: "#FF5A4D" }}
             >
               →
             </span>

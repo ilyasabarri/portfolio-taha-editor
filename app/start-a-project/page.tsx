@@ -145,7 +145,7 @@ export default function StartAProjectPage() {
         className="relative pt-32 pb-16 px-6 md:px-12 overflow-hidden"
         style={{ background: "#000000" }}
       >
-        {/* Blue glow */}
+        {/* Red glow */}
         <div
           className="absolute pointer-events-none"
           style={{
@@ -155,7 +155,7 @@ export default function StartAProjectPage() {
             width: "80vw",
             height: "60vh",
             borderRadius: "50%",
-            background: "radial-gradient(ellipse, rgba(0,25,255,0.1) 0%, transparent 65%)",
+            background: "radial-gradient(ellipse, rgba(226,56,41,0.18) 0%, transparent 65%)",
             filter: "blur(40px)",
             transition: "transform 0.6s ease-out",
           }}
@@ -183,7 +183,7 @@ export default function StartAProjectPage() {
                   className="hero-word block"
                   style={{
                     opacity: 0,
-                    color: i === 2 ? "#0019FF" : "white",
+                    color: i === 2 ? "#E23829" : "white",
                     transform: "translateY(110%)",
                   }}
                 >
@@ -294,9 +294,9 @@ export default function StartAProjectPage() {
                         padding: "0.65rem 1.4rem",
                         borderRadius: "9999px",
                         border: selected
-                          ? "1px solid #0019FF"
+                          ? "1px solid #E23829"
                           : "1px solid rgba(255,255,255,0.12)",
-                        background: selected ? "#0019FF" : "transparent",
+                        background: selected ? "#E23829" : "transparent",
                         color: selected ? "white" : "rgba(255,255,255,0.5)",
                         cursor: "none",
                         transition: "all 0.25s ease",
@@ -320,7 +320,7 @@ export default function StartAProjectPage() {
                     letterSpacing: "0.3em",
                     color:
                       focusedField === "brief"
-                        ? "#C8FF00"
+                        ? "#FF5A4D"
                         : "rgba(255,255,255,0.35)",
                     display: "block",
                     marginBottom: "1rem",
@@ -344,7 +344,7 @@ export default function StartAProjectPage() {
                     width: "100%",
                     background: "transparent",
                     border: "none",
-                    borderBottom: `1px solid ${focusedField === "brief" ? "#C8FF00" : "rgba(255,255,255,0.1)"}`,
+                    borderBottom: `1px solid ${focusedField === "brief" ? "#FF5A4D" : "rgba(255,255,255,0.1)"}`,
                     color: "white",
                     fontFamily: "var(--font-space-grotesk), sans-serif",
                     fontSize: "1rem",
@@ -400,15 +400,15 @@ export default function StartAProjectPage() {
                         borderRadius: "9999px",
                         border:
                           formData.budget === opt
-                            ? "1px solid #C8FF00"
+                            ? "1px solid #FF5A4D"
                             : "1px solid rgba(255,255,255,0.1)",
                         background:
                           formData.budget === opt
-                            ? "rgba(200,255,0,0.1)"
+                            ? "rgba(255,90,77,0.12)"
                             : "transparent",
                         color:
                           formData.budget === opt
-                            ? "#C8FF00"
+                            ? "#FF5A4D"
                             : "rgba(255,255,255,0.4)",
                         cursor: "none",
                         transition: "all 0.25s ease",
@@ -453,15 +453,15 @@ export default function StartAProjectPage() {
                         borderRadius: "9999px",
                         border:
                           formData.timeline === opt
-                            ? "1px solid #C8FF00"
+                            ? "1px solid #FF5A4D"
                             : "1px solid rgba(255,255,255,0.1)",
                         background:
                           formData.timeline === opt
-                            ? "rgba(200,255,0,0.1)"
+                            ? "rgba(255,90,77,0.12)"
                             : "transparent",
                         color:
                           formData.timeline === opt
-                            ? "#C8FF00"
+                            ? "#FF5A4D"
                             : "rgba(255,255,255,0.4)",
                         cursor: "none",
                         transition: "all 0.25s ease",
@@ -497,7 +497,7 @@ export default function StartAProjectPage() {
                   className="group relative overflow-hidden"
                   style={{
                     padding: "1.4rem 3.5rem",
-                    border: "1px solid #0019FF",
+                    border: "1px solid #E23829",
                     borderRadius: "9999px",
                     background: "transparent",
                     fontFamily: "var(--font-space-mono), monospace",
@@ -512,7 +512,7 @@ export default function StartAProjectPage() {
                   <span
                     className="absolute inset-0 rounded-full"
                     style={{
-                      background: "#0019FF",
+                      background: "#E23829",
                       transform: "scaleX(0)",
                       transformOrigin: "left",
                       transition: "transform 0.5s cubic-bezier(0.76, 0, 0.24, 1)",
@@ -672,7 +672,7 @@ function FormField({
           fontFamily: "var(--font-space-mono), monospace",
           fontSize: "0.58rem",
           letterSpacing: "0.3em",
-          color: focused ? "#C8FF00" : "rgba(255,255,255,0.35)",
+          color: focused ? "#FF5A4D" : "rgba(255,255,255,0.35)",
           display: "block",
           marginBottom: "1rem",
           transition: "color 0.3s ease",
@@ -693,7 +693,7 @@ function FormField({
           width: "100%",
           background: "transparent",
           border: "none",
-          borderBottom: `1px solid ${focused ? "#C8FF00" : "rgba(255,255,255,0.1)"}`,
+          borderBottom: `1px solid ${focused ? "#FF5A4D" : "rgba(255,255,255,0.1)"}`,
           color: "white",
           fontFamily: "var(--font-space-grotesk), sans-serif",
           fontSize: "1.1rem",
@@ -725,7 +725,7 @@ function SuccessState() {
         }}
       >
         YOUR BRIEF{" "}
-        <span style={{ color: "#C8FF00" }}>IS ON ITS WAY</span>
+        <span style={{ color: "#FF5A4D" }}>IS ON ITS WAY</span>
       </div>
       <p
         style={{
@@ -745,10 +745,10 @@ function SuccessState() {
           fontFamily: "var(--font-space-mono), monospace",
           fontSize: "0.65rem",
           letterSpacing: "0.25em",
-          color: "#0019FF",
+          color: "#E23829",
           textDecoration: "none",
           padding: "1rem 2.5rem",
-          border: "1px solid #0019FF",
+          border: "1px solid #E23829",
           borderRadius: "9999px",
           transition: "all 0.3s ease",
         }}

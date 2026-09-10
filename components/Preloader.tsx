@@ -140,7 +140,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           style={{
             position: "absolute",
             inset: 0,
-            background: "linear-gradient(90deg, #0019FF 0%, #C8FF00 100%)",
+            background: "linear-gradient(90deg, #E23829 0%, #FF5A4D 100%)",
             transformOrigin: "left center",
             transform: "scaleX(0)",
           }}

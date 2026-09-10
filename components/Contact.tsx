@@ -79,7 +79,7 @@ export default function Contact() {
           width: "800px",
           height: "500px",
           borderRadius: "50%",
-          background: "radial-gradient(ellipse, rgba(0,25,255,0.15) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse, rgba(226,56,41,0.18) 0%, transparent 70%)",
           filter: "blur(40px)",
         }}
       />
@@ -108,7 +108,7 @@ export default function Contact() {
           <div
             style={{
               fontSize: "clamp(4rem, 13vw, 13rem)",
-              color: "#0019FF",
+              color: "#E23829",
               overflow: "hidden",
             }}
           >
@@ -166,7 +166,7 @@ export default function Contact() {
             className="group relative overflow-hidden inline-flex items-center"
             style={{
               padding: "1.2rem 2.5rem",
-              border: "1px solid #0019FF",
+              border: "1px solid #E23829",
               borderRadius: "9999px",
               background: "transparent",
               fontFamily: "var(--font-space-mono), monospace",
@@ -181,7 +181,7 @@ export default function Contact() {
             <span
               className="absolute inset-0 rounded-full transition-transform duration-500 ease-expo"
               style={{
-                background: "#0019FF",
+                background: "#E23829",
                 transform: "scaleX(0)",
                 transformOrigin: "left",
               }}

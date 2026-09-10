@@ -7,13 +7,13 @@ import { useLang } from "@/lib/lang-context";
 gsap.registerPlugin(ScrollTrigger);
 
 const CARD_COLORS = [
-  { bg: "linear-gradient(140deg, #0019FF 0%, #000830 100%)", accent: "#C8FF00" },
-  { bg: "linear-gradient(140deg, #001a00 0%, #0a2200 100%)", accent: "#C8FF00" },
-  { bg: "linear-gradient(140deg, #0019FF 0%, #000622 100%)", accent: "#ffffff" },
-  { bg: "linear-gradient(140deg, #001500 0%, #0d2800 100%)", accent: "#C8FF00" },
-  { bg: "linear-gradient(140deg, #000d80 0%, #000420 100%)", accent: "#C8FF00" },
-  { bg: "linear-gradient(140deg, #001a00 0%, #071900 100%)", accent: "#0019FF" },
-  { bg: "linear-gradient(140deg, #0019FF 0%, #00093a 100%)", accent: "#C8FF00" },
+  { bg: "linear-gradient(140deg, #E23829 0%, #3D0706 100%)", accent: "#FF5A4D" },
+  { bg: "linear-gradient(140deg, #580B09 0%, #200404 100%)", accent: "#FF5A4D" },
+  { bg: "linear-gradient(140deg, #E23829 0%, #1c0303 100%)", accent: "#ffffff" },
+  { bg: "linear-gradient(140deg, #4A0807 0%, #150202 100%)", accent: "#FF5A4D" },
+  { bg: "linear-gradient(140deg, #751210 0%, #290403 100%)", accent: "#FF5A4D" },
+  { bg: "linear-gradient(140deg, #3A0504 0%, #100101 100%)", accent: "#E23829" },
+  { bg: "linear-gradient(140deg, #E23829 0%, #580B09 100%)", accent: "#FF5A4D" },
 ];
 
 // Geometric SVG accent per card
@@ -102,7 +102,7 @@ export default function Team() {
       ref={sectionRef}
       className="relative py-24 md:py-36 px-6 md:px-12 overflow-hidden"
       style={{
-        background: "linear-gradient(180deg, #0019FF 0%, #000d80 45%, #00041a 100%)",
+        background: "linear-gradient(180deg, #E23829 0%, #751210 45%, #1c0303 100%)",
       }}
     >
       {/* Background pattern */}

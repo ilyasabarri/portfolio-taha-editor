@@ -46,7 +46,7 @@ export default function Testimonials() {
       className="relative overflow-hidden"
       style={{
         background:
-          "linear-gradient(180deg, #00041a 0%, #000000 100%)",
+          "linear-gradient(180deg, #1c0303 0%, #000000 100%)",
         paddingTop: "6rem",
         paddingBottom: "6rem",
       }}
@@ -56,7 +56,7 @@ export default function Testimonials() {
         style={{
           height: "1px",
           background:
-            "linear-gradient(90deg, transparent, #0019FF, #C8FF00, transparent)",
+            "linear-gradient(90deg, transparent, #E23829, #FF5A4D, transparent)",
           marginBottom: "5rem",
         }}
       />
@@ -110,7 +110,7 @@ export default function Testimonials() {
                 style={{
                   fontFamily: '"Bebas Neue", sans-serif',
                   fontSize: "8rem",
-                  color: "#0019FF",
+                  color: "#E23829",
                   lineHeight: 0.5,
                   marginBottom: "1rem",
                   opacity: 0.5,
@@ -134,7 +134,7 @@ export default function Testimonials() {
 
               <div className="flex items-center gap-4 mt-6">
                 <div
-                  style={{ width: "30px", height: "1px", background: "#C8FF00" }}
+                  style={{ width: "30px", height: "1px", background: "#FF5A4D" }}
                 />
                 <div>
                   <div
@@ -174,7 +174,7 @@ export default function Testimonials() {
                 width: activeQuote === i ? "2rem" : "0.4rem",
                 height: "0.4rem",
                 borderRadius: "9999px",
-                background: activeQuote === i ? "#C8FF00" : "rgba(255,255,255,0.2)",
+                background: activeQuote === i ? "#FF5A4D" : "rgba(255,255,255,0.2)",
                 transition: "all 0.4s ease",
                 border: "none",
                 cursor: "pointer",
@@ -189,7 +189,7 @@ export default function Testimonials() {
         style={{
           height: "1px",
           background:
-            "linear-gradient(90deg, transparent, #0019FF, transparent)",
+            "linear-gradient(90deg, transparent, #E23829, transparent)",
           marginTop: "5rem",
         }}
       />
