@@ -151,6 +151,228 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
           }}
         />
 
+        {/* Top-Right Floating Interactive Video Editing Suite Widget */}
+        <div
+          className="hero-meta absolute top-[20%] right-[6%] hidden lg:flex flex-col gap-3 w-[360px] pointer-events-auto"
+          style={{
+            zIndex: 10,
+            transform: `translate(${mousePos.x * -12}px, ${mousePos.y * -10}px)`,
+            transition: "transform 0.5s ease-out",
+          }}
+        >
+          {/* Main Glass Widget Box */}
+          <div
+            className="p-5 rounded-xl border border-white/10 group cursor-none transition-all duration-500"
+            data-cursor
+            onClick={() => {
+              if (service.projects.length > 0) {
+                setActiveModalProject(service.projects[0]);
+              }
+            }}
+            style={{
+              background: "linear-gradient(135deg, rgba(28,3,3,0.85) 0%, rgba(10,2,2,0.92) 100%)",
+              backdropFilter: "blur(16px)",
+              boxShadow: "0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(226,56,41,0.15)",
+              border: "1px solid rgba(255,90,77,0.3)",
+            }}
+          >
+            {/* Widget Header HUD */}
+            <div className="flex items-center justify-between mb-3 pb-2 border-b border-white/10">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#FF5A4D] animate-pulse" />
+                <span
+                  style={{
+                    fontFamily: "var(--font-space-mono), monospace",
+                    fontSize: "0.55rem",
+                    letterSpacing: "0.2em",
+                    color: "rgba(255,255,255,0.7)",
+                  }}
+                >
+                  REC · 00:02:14:09
+                </span>
+              </div>
+              <span
+                style={{
+                  fontFamily: "var(--font-space-mono), monospace",
+                  fontSize: "0.5rem",
+                  letterSpacing: "0.15em",
+                  color: service.accentColor,
+                  background: `${service.accentColor}18`,
+                  padding: "0.15rem 0.5rem",
+                  borderRadius: "9999px",
+                }}
+              >
+                PRO RES 4K
+              </span>
+            </div>
+
+            {/* Video Screen Preview Box */}
+            <div
+              className="relative h-[160px] rounded-lg overflow-hidden flex flex-col justify-between p-3 border border-white/10 mb-3"
+              style={{
+                background: "linear-gradient(140deg, #3D0706 0%, #150202 100%)",
+              }}
+            >
+              {/* Grid texture */}
+              <div
+                className="absolute inset-0 pointer-events-none opacity-30"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
+                  backgroundSize: "24px 24px",
+                }}
+              />
+
+              {/* Top Watermark */}
+              <div className="relative z-10 flex items-center justify-between">
+                <span
+                  style={{
+                    fontFamily: "var(--font-space-mono), monospace",
+                    fontSize: "0.48rem",
+                    letterSpacing: "0.15em",
+                    color: "rgba(255,255,255,0.5)",
+                    background: "rgba(0,0,0,0.5)",
+                    padding: "0.15rem 0.4rem",
+                    borderRadius: "3px",
+                  }}
+                >
+                  {service.shortTitle.toUpperCase()} REEL
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-space-mono), monospace",
+                    fontSize: "0.48rem",
+                    color: "rgba(255,255,255,0.4)",
+                  }}
+                >
+                  PREMIERE / DAVINCI
+                </span>
+              </div>
+
+              {/* Center Play Button HUD */}
+              <div className="relative z-10 flex flex-col items-center justify-center my-auto">
+                <div
+                  className="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+                  style={{
+                    background: service.accentColor,
+                    boxShadow: `0 0 25px ${service.accentColor}bb`,
+                  }}
+                >
+                  <span className="text-black text-sm ml-0.5">▶</span>
+                </div>
+                <span
+                  className="mt-2"
+                  style={{
+                    fontFamily: "var(--font-space-mono), monospace",
+                    fontSize: "0.52rem",
+                    letterSpacing: "0.2em",
+                    color: "rgba(255,255,255,0.8)",
+                  }}
+                >
+                  CLICK TO WATCH DEMO REEL
+                </span>
+              </div>
+
+              {/* Bottom Placeholder Note */}
+              <div className="relative z-10 flex items-center justify-between">
+                <span
+                  style={{
+                    fontFamily: "var(--font-space-mono), monospace",
+                    fontSize: "0.48rem",
+                    color: "#FF5A4D",
+                    letterSpacing: "0.1em",
+                  }}
+                >
+                  + DROP CLIENT VIDEO HERE
+                </span>
+                <div className="flex items-end gap-0.5 h-3">
+                  {[0.4, 0.8, 0.5, 0.9, 0.6].map((h, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        width: "2px",
+                        height: `${h * 100}%`,
+                        background: service.accentColor,
+                        borderRadius: "1px",
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Metrics Row */}
+            <div className="grid grid-cols-3 gap-2 text-center pt-1">
+              <div>
+                <div
+                  style={{
+                    fontFamily: '"Bebas Neue", sans-serif',
+                    fontSize: "1.1rem",
+                    color: "white",
+                    lineHeight: 1,
+                  }}
+                >
+                  99.4%
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-space-mono), monospace",
+                    fontSize: "0.45rem",
+                    letterSpacing: "0.1em",
+                    color: "rgba(255,255,255,0.4)",
+                  }}
+                >
+                  RETENTION
+                </div>
+              </div>
+              <div>
+                <div
+                  style={{
+                    fontFamily: '"Bebas Neue", sans-serif',
+                    fontSize: "1.1rem",
+                    color: service.accentColor,
+                    lineHeight: 1,
+                  }}
+                >
+                  CINEMA
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-space-mono), monospace",
+                    fontSize: "0.45rem",
+                    letterSpacing: "0.1em",
+                    color: "rgba(255,255,255,0.4)",
+                  }}
+                >
+                  COLOR GRADE
+                </div>
+              </div>
+              <div>
+                <div
+                  style={{
+                    fontFamily: '"Bebas Neue", sans-serif',
+                    fontSize: "1.1rem",
+                    color: "white",
+                    lineHeight: 1,
+                  }}
+                >
+                  24-BIT
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-space-mono), monospace",
+                    fontSize: "0.45rem",
+                    letterSpacing: "0.1em",
+                    color: "rgba(255,255,255,0.4)",
+                  }}
+                >
+                  AUDIO MIX
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Label */}
         <div
           className="hero-meta section-label mb-6"
