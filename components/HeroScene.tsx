@@ -351,25 +351,25 @@ export default function HeroScene() {
             <Suspense fallback={null}>
               <ParticleAtmosphere count={2500} />
 
-              {/* 3D Software Tool Cubes Spaced & Elevated Above the Fold */}
+              {/* 3D Software Tool Cubes Spaced & Balanced with Breathing Room */}
               {/* Left Side 3D Cubes */}
               <SoftwareCube3D
                 type="Pr"
-                position={[-4.3, 2.6, 0.4]}
+                position={[-4.5, 1.85, 0.4]}
                 rotation={[0.15, 0.25, -0.1]}
-                scale={1.1}
+                scale={1.05}
                 floatSpeed={2.2}
               />
               <SoftwareCube3D
                 type="Ai"
-                position={[-3.7, 1.0, 1.1]}
+                position={[-3.9, 0.25, 1.0]}
                 rotation={[-0.1, 0.3, 0.15]}
-                scale={1.05}
+                scale={1.0}
                 floatSpeed={1.8}
               />
               <SoftwareCube3D
                 type="DaVinci"
-                position={[-4.4, -0.5, 0.2]}
+                position={[-4.6, -1.25, 0.2]}
                 rotation={[0.2, 0.15, -0.05]}
                 scale={0.95}
                 floatSpeed={2.5}
@@ -378,23 +378,23 @@ export default function HeroScene() {
               {/* Right Side 3D Cubes */}
               <SoftwareCube3D
                 type="Ps"
-                position={[4.3, 2.5, 0.6]}
+                position={[4.5, 1.75, 0.6]}
                 rotation={[-0.15, -0.25, 0.1]}
-                scale={1.1}
+                scale={1.05}
                 floatSpeed={2.0}
               />
               <SoftwareCube3D
                 type="Ae"
-                position={[3.7, 0.9, 0.8]}
+                position={[3.9, 0.15, 0.8]}
                 rotation={[0.1, -0.2, -0.12]}
                 scale={1.0}
                 floatSpeed={2.4}
               />
               <SoftwareCube3D
                 type="Blender"
-                position={[4.4, -0.6, 0.4]}
+                position={[4.6, -1.35, 0.4]}
                 rotation={[-0.2, -0.1, 0.08]}
-                scale={1.05}
+                scale={1.0}
                 floatSpeed={1.9}
               />
 
