@@ -17,10 +17,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!service) return {};
 
   return {
-    title: `${service.title} — North Creative Agency`,
+    title: `${service.title} — Taha El Maanaoui Video Editor`,
     description: service.description,
     openGraph: {
-      title: `${service.title} — North Creative Agency`,
+      title: `${service.title} — Taha El Maanaoui`,
       description: service.description,
       type: "website",
     },

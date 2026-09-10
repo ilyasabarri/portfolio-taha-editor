@@ -383,7 +383,7 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
               color: "rgba(255,255,255,0.2)",
             }}
           >
-            © 2024 NORTH CREATIVE AGENCY — ALL RIGHTS RESERVED
+            © 2026 TAHA EL MAANAOUI — ALL RIGHTS RESERVED
           </p>
           <Link
             href="/"
@@ -453,7 +453,7 @@ function ServiceNav({ accentColor }: { accentColor: string }) {
           color: "white",
         }}
       >
-        NORTH CREATIVE
+        TAHA EL MAANAOUI
       </div>
 
       <Link

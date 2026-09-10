@@ -6,21 +6,22 @@ import CustomCursor from "@/components/CustomCursor";
 import type { Metadata } from "next";
 
 const SERVICES_OPTIONS = [
-  "3D & CGI",
-  "Graphic Design",
-  "Photography",
-  "Videography",
-  "Sound Design",
-  "Architecture",
-  "Web & Digital",
+  "Shorts / Reels / TikTok",
+  "UGC & Product Ads",
+  "Video Sales Letters (VSL)",
+  "Brand Commercials",
+  "YouTube Vlogs & Talking Head",
+  "Video Essays & Documentaries",
+  "Podcasts & SaaS Demos",
+  "Custom Video Edit On Demand",
 ];
 
 const BUDGET_OPTIONS = [
-  "Under 5,000 DH",
-  "5,000 – 15,000 DH",
-  "15,000 – 30,000 DH",
-  "30,000 – 60,000 DH",
-  "60,000+ DH",
+  "Under $500",
+  "$500 – $1,500",
+  "$1,500 – $3,000",
+  "$3,000 – $5,000",
+  "$5,000+",
   "Let's discuss",
 ];
 
@@ -109,8 +110,7 @@ export default function StartAProjectPage() {
     );
 
     const subject = encodeURIComponent(`New Project Inquiry — ${formData.name}`);
-    // EMAIL PLACEHOLDER — replace YOUR_EMAIL_HERE with actual email address
-    const mailtoLink = `mailto:YOUR_EMAIL_HERE?subject=${subject}&body=${body}`;
+    const mailtoLink = `mailto:tahaelmaanaoui@gmail.com?subject=${subject}&body=${body}`;
 
     // Small delay for UX
     await new Promise((r) => setTimeout(r, 600));
@@ -554,7 +554,7 @@ export default function StartAProjectPage() {
               color: "rgba(255,255,255,0.2)",
             }}
           >
-            © 2024 NORTH CREATIVE AGENCY — ALL RIGHTS RESERVED
+            © 2026 TAHA EL MAANAOUI — ALL RIGHTS RESERVED
           </p>
           <Link
             href="/"
@@ -624,7 +624,7 @@ function ProjectNav() {
           color: "white",
         }}
       >
-        NORTH CREATIVE
+        TAHA EL MAANAOUI
       </div>
 
       <div style={{ width: "80px" }} />

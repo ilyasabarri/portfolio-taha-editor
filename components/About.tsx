@@ -158,7 +158,7 @@ export default function About() {
                 color: "rgba(255,255,255,0.3)",
               }}
             >
-              ABOUT THE STUDIO
+              SOLO VIDEO EDITOR
             </span>
           </div>
 

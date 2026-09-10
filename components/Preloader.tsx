@@ -93,23 +93,23 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       >
         <Image
           src="/images/logo.png"
-          alt="North Creative Agency"
+          alt="Taha El Maanaoui — Video Editor"
           fill
           style={{ objectFit: "contain" }}
           priority
         />
       </div>
 
-      {/* Agency name */}
+      {/* Brand name */}
       <div style={{
         fontFamily: "var(--font-space-mono), monospace",
         fontSize: "0.6rem",
         letterSpacing: "0.6em",
-        color: "rgba(255,255,255,0.3)",
+        color: "rgba(255,255,255,0.4)",
         marginBottom: "3.5rem",
         textAlign: "center",
       }}>
-        NORTH&nbsp;&nbsp;CREATIVE&nbsp;&nbsp;AGENCY
+        TAHA&nbsp;&nbsp;EL&nbsp;&nbsp;MAANAOUI
       </div>
 
       {/* Big counter */}

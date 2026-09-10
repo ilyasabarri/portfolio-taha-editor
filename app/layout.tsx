@@ -24,22 +24,24 @@ const dancing = Dancing_Script({
 // Using a system fallback for Bebas Neue-style display; 
 // we'll load from Google Fonts via CSS
 export const metadata: Metadata = {
-  title: "North Creative Agency — Creative Digital Experiences",
+  title: "Taha El Maanaoui — Senior Video Editor & Post-Production Specialist",
   description:
-    "North Creative Agency is a full-service creative studio specialising in 3D, CGI, branding, photography, videography, sound design, architecture and web design.",
+    "Official portfolio of Taha El Maanaoui, senior solo video editor with over 500+ completed projects and 60+ global clients. Specializing in high-retention video edits across Shorts, VSLs, Commercials, Documentaries, UGC Ads, and custom post-production on command.",
   keywords: [
-    "creative agency",
-    "3D CGI",
-    "branding",
-    "photography",
-    "videography",
-    "architecture",
-    "sound design",
-    "north creative",
+    "Taha El Maanaoui",
+    "video editor",
+    "post production",
+    "Premiere Pro editor",
+    "After Effects motion graphics",
+    "VSL editor",
+    "Shorts Reels TikTok editor",
+    "UGC video ads",
+    "documentary video editor",
+    "YouTube vlog editor",
   ],
   openGraph: {
-    title: "North Creative Agency",
-    description: "Creative Digital Experiences",
+    title: "Taha El Maanaoui — Senior Video Editor",
+    description: "High-retention cinematic video edits & custom post-production on demand.",
     type: "website",
   },
 };

@@ -9,17 +9,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Maps service title → route slug
 const SERVICE_SLUGS: Record<string, string> = {
-  "3D & CGI": "3d-cgi",
-  "GRAPHIC DESIGN": "graphic-design",
-  "DESIGN GRAPHIQUE": "graphic-design",
-  "PHOTOGRAPHY": "photography",
-  "PHOTOGRAPHIE": "photography",
-  "VIDEOGRAPHY": "videography",
-  "VIDÉOGRAPHIE": "videography",
-  "SOUND DESIGN": "sound-design",
-  "DESIGN SONORE": "sound-design",
-  "ARCHITECTURE": "architecture",
-  "WEB & DIGITAL": "web-digital",
+  "SHORTS / REELS / TIKTOK": "shorts-reels-tiktok",
+  "UGC & PRODUCT ADS": "ugc-product-ads",
+  "VIDEO SALES LETTERS (VSL)": "vsl-sales-letters",
+  "BRAND COMMERCIALS": "brand-commercials",
+  "YOUTUBE VLOGS & TALKING HEAD": "youtube-talking-head",
+  "VIDEO ESSAYS & DOCUMENTARIES": "documentaries-essays",
+  "PODCASTS & SAAS DEMOS": "podcasts-saas-demos",
 };
 
 export default function Services() {
