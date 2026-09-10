@@ -21,7 +21,7 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
     const tl = gsap.timeline({ delay: 0.15 });
     tl.fromTo(
       ".hero-line-inner",
-      { y: "110%", opacity: 0 },
+      { y: 30, opacity: 0 },
       { y: "0%", opacity: 1, duration: 1.1, stagger: 0.12, ease: "power4.out" }
     )
       .fromTo(
@@ -152,26 +152,19 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
         </div>
 
         {/* Main heading */}
-        <div className="hero-title-container relative" style={{ zIndex: 3, overflow: "visible" }}>
+        <div className="hero-title-container relative max-w-5xl" style={{ zIndex: 3 }}>
           <h1
             style={{
               fontFamily: '"Bebas Neue", sans-serif',
-              fontSize: "clamp(4.5rem, 13vw, 12rem)",
-              lineHeight: 0.87,
+              fontSize: "clamp(2.5rem, 6.5vw, 5.5rem)",
+              lineHeight: 0.95,
               color: "white",
-              overflow: "visible",
+              letterSpacing: "0.02em",
             }}
           >
-            {service.headline.split(" ").map((word, wi) => (
-              <span key={wi} className="block overflow-hidden">
-                <span
-                  className="hero-line-inner block translate-y-full"
-                  style={{ opacity: 0, color: wi % 2 === 1 && service.headline.split(" ").length > 1 ? service.accentColor : "white" }}
-                >
-                  {word}
-                </span>
-              </span>
-            ))}
+            <span className="hero-line-inner inline-block" style={{ opacity: 0 }}>
+              {service.headline}
+            </span>
           </h1>
         </div>
 
