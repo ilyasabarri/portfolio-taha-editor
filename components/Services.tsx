@@ -10,12 +10,18 @@ gsap.registerPlugin(ScrollTrigger);
 // Maps service title → route slug
 const SERVICE_SLUGS: Record<string, string> = {
   "SHORTS / REELS / TIKTOK": "shorts-reels-tiktok",
-  "UGC & PRODUCT ADS": "ugc-product-ads",
+  "UGC ADS": "ugc-ads",
+  "E-COMMERCE PRODUCT ADS": "ecommerce-product-ads",
   "VIDEO SALES LETTERS (VSL)": "vsl-sales-letters",
   "BRAND COMMERCIALS": "brand-commercials",
-  "YOUTUBE VLOGS & TALKING HEAD": "youtube-talking-head",
-  "VIDEO ESSAYS & DOCUMENTARIES": "documentaries-essays",
-  "PODCASTS & SAAS DEMOS": "podcasts-saas-demos",
+  "YOUTUBE VLOGS": "youtube-vlogs",
+  "TALKING HEAD VIDEOS": "talking-head-videos",
+  "VIDEO DOCUMENTARIES / VIDEO ESSAYS": "video-documentaries-essays",
+  "PODCASTS / INTERVIEWS": "podcasts-interviews",
+  "SAAS PRODUCT DEMOS": "saas-product-demos",
+  "EXPLAINER VIDEOS": "explainer-videos",
+  "CORPORATE TRAINING VIDEOS": "corporate-training-videos",
+  "MUSIC VIDEOS": "music-videos",
 };
 
 export default function Services() {
@@ -97,7 +103,7 @@ export default function Services() {
                     letterSpacing: "0.2em",
                     color:
                       hoveredIndex === i
-                        ? "#C8FF00"
+                        ? "#FF5A4D"
                         : "rgba(255,255,255,0.3)",
                     minWidth: "2.5rem",
                     transition: "color 0.3s ease",
@@ -143,7 +149,7 @@ export default function Services() {
                 {/* Arrow */}
                 <span
                   style={{
-                    color: hoveredIndex === i ? "#C8FF00" : "rgba(255,255,255,0.2)",
+                    color: hoveredIndex === i ? "#FF5A4D" : "rgba(255,255,255,0.2)",
                     fontSize: "1.2rem",
                     transition: "color 0.3s ease, transform 0.3s ease",
                     transform: hoveredIndex === i ? "translateX(6px)" : "translateX(0)",

@@ -116,11 +116,20 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
             maxWidth: "900px",
             maxHeight: "900px",
             borderRadius: "50%",
-            background: isAccentGreen
-              ? "radial-gradient(ellipse, rgba(200,255,0,0.06) 0%, transparent 60%)"
-              : "radial-gradient(ellipse, rgba(0,25,255,0.1) 0%, transparent 60%)",
+            background: "radial-gradient(ellipse, rgba(226,56,41,0.22) 0%, transparent 65%)",
             transform: `translate(${mousePos.x * 18}px, ${mousePos.y * 14}px)`,
             transition: "transform 0.6s ease-out",
+            filter: "blur(40px)",
+          }}
+        />
+
+        {/* Background grid overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(226,56,41,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(226,56,41,0.05) 1px, transparent 1px)",
+            backgroundSize: "80px 80px",
           }}
         />
 
@@ -147,7 +156,7 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
           <h1
             style={{
               fontFamily: '"Bebas Neue", sans-serif',
-              fontSize: "clamp(5rem, 15vw, 14rem)",
+              fontSize: "clamp(4.5rem, 13vw, 12rem)",
               lineHeight: 0.87,
               color: "white",
               overflow: "visible",
@@ -177,7 +186,7 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
               style={{
                 fontFamily: "var(--font-space-grotesk), sans-serif",
                 fontSize: "clamp(0.85rem, 1.5vw, 1.1rem)",
-                color: "rgba(255,255,255,0.55)",
+                color: "rgba(255,255,255,0.7)",
                 letterSpacing: "0.04em",
                 lineHeight: 1.7,
                 opacity: 0,
@@ -206,7 +215,7 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
                     fontFamily: "var(--font-space-mono), monospace",
                     fontSize: "0.55rem",
                     letterSpacing: "0.25em",
-                    color: "rgba(255,255,255,0.35)",
+                    color: "rgba(255,255,255,0.4)",
                     marginTop: "0.3rem",
                   }}
                 >
@@ -219,7 +228,7 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
       </section>
 
       {/* ══════════════ SELECTED WORK ══════════════ */}
-      <section className="py-24 md:py-36 px-6 md:px-12" style={{ background: "#080808" }}>
+      <section className="py-24 md:py-36 px-6 md:px-12 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #000000 0%, #1c0303 100%)" }}>
         <div className="max-w-7xl mx-auto">
           <div className="scroll-reveal mb-16">
             <div className="section-label mb-4">SELECTED WORK</div>
@@ -250,17 +259,15 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
 
       {/* ══════════════ OUR APPROACH ══════════════ */}
       <section
-        className="py-24 md:py-36 px-6 md:px-12"
+        className="py-24 md:py-36 px-6 md:px-12 relative overflow-hidden"
         style={{
-          background: isAccentGreen
-            ? "linear-gradient(180deg, #000730 0%, #000d80 50%, #0019FF 100%)"
-            : "linear-gradient(180deg, #050505 0%, #080808 100%)",
+          background: "linear-gradient(180deg, #1c0303 0%, #3d0706 50%, #751210 100%)",
         }}
       >
         <div className="max-w-7xl mx-auto">
           <div className="scroll-reveal mb-16">
-            <div className="section-label mb-4" style={{ color: isAccentGreen ? "rgba(200,255,0,0.6)" : undefined }}>
-              HOW WE WORK
+            <div className="section-label mb-4">
+              HOW I WORK
             </div>
             <h2
               style={{
@@ -270,7 +277,7 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
                 lineHeight: 0.9,
               }}
             >
-              OUR APPROACH
+              THE PROCESS
             </h2>
           </div>
 
@@ -301,7 +308,7 @@ export default function ServicePageLayout({ service }: ServicePageLayoutProps) {
             width: "600px",
             height: "400px",
             borderRadius: "50%",
-            background: "radial-gradient(ellipse, rgba(0,25,255,0.12) 0%, transparent 70%)",
+            background: "radial-gradient(ellipse, rgba(226,56,41,0.25) 0%, transparent 70%)",
             filter: "blur(40px)",
           }}
         />
@@ -489,12 +496,10 @@ function ProjectCard({
 }) {
   const [hovered, setHovered] = useState(false);
   const colors = [
-    "rgba(0,25,255,0.08)",
-    "rgba(200,255,0,0.05)",
-    "rgba(255,255,255,0.04)",
-    "rgba(0,25,255,0.12)",
-    "rgba(200,255,0,0.07)",
-    "rgba(255,255,255,0.06)",
+    "linear-gradient(140deg, #E23829 0%, #3D0706 100%)",
+    "linear-gradient(140deg, #580B09 0%, #200404 100%)",
+    "linear-gradient(140deg, #4A0807 0%, #150202 100%)",
+    "linear-gradient(140deg, #751210 0%, #290403 100%)",
   ];
   const bgColor = colors[index % colors.length];
 
